@@ -171,7 +171,7 @@
 -   **Backend:**
 
     -   Python
-    -   Flask
+    -   Flask / FastAPI
     -   PostgreSQL
 
 -   **Frontend:**
