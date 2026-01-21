@@ -1,4 +1,5 @@
 :80 {
     root * /frontend/dist
     file_server
+    reverse_proxy /api/* backend:8000
 }
