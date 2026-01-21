@@ -1,0 +1,4 @@
+:80 {
+    root * /frontend/dist
+    file_server
+}
