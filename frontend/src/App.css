@@ -1,0 +1,26 @@
+:root {
+	--bg: #ffffff;
+	--text: #000000;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--bg: #1e1e1e;
+		--text: #d4d4d4;
+	}
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	position: relative;
+	max-width: 1000px;
+	margin: auto;
+	background-color: var(--bg);
+	color: var(--text);
+	font: normal 15px sans-serif;
+}
