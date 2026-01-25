@@ -18,6 +18,8 @@ services:
             - "8000:8000"
         environment:
             - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+        volumes:
+            - ./media:/backend/media
         depends_on:
             - db
 
