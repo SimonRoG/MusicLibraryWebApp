@@ -17,7 +17,7 @@ DATABASE_URL = os.getenv(
 conn = psycopg.connect(DATABASE_URL)
 cur = conn.cursor()
 
-with open("data/genres.csv", "r") as f:
+with open("seed/genres.csv", "r") as f:
     reader = csv.DictReader(f)
     for row in reader:
         cur.execute(
@@ -29,7 +29,7 @@ with open("data/genres.csv", "r") as f:
             (row["name"],),
         )
 
-with open("data/artists.csv", "r") as f:
+with open("seed/artists.csv", "r") as f:
     reader = csv.DictReader(f)
     for row in reader:
         cur.execute(
@@ -41,7 +41,7 @@ with open("data/artists.csv", "r") as f:
             (row["name"], row["description"]),
         )
 
-with open("data/users.csv", "r") as f:
+with open("seed/users.csv", "r") as f:
     reader = csv.DictReader(f)
     for row in reader:
         cur.execute(
@@ -57,7 +57,7 @@ with open("data/users.csv", "r") as f:
             ),
         )
 
-with open("data/albums.json", "r") as f:
+with open("seed/albums.json", "r") as f:
     albums_data = json.load(f)
     for album in albums_data:
         cur.execute(
@@ -77,7 +77,7 @@ with open("data/albums.json", "r") as f:
             ),
         )
 
-with open("data/tracks.csv", "r") as f:
+with open("seed/tracks.csv", "r") as f:
     reader = csv.DictReader(f)
     for row in reader:
         cur.execute(
@@ -103,7 +103,7 @@ with open("data/tracks.csv", "r") as f:
             ),
         )
 
-with open("data/albums.json", "r") as f:
+with open("seed/albums.json", "r") as f:
     albums_data = json.load(f)
     for album in albums_data:
         for position, track_title in enumerate(album["tracks"], start=1):
@@ -119,7 +119,7 @@ with open("data/albums.json", "r") as f:
                 (album["title"], track_title, position),
             )
 
-with open("data/playlists.json", "r") as f:
+with open("seed/playlists.json", "r") as f:
     playlists_data = json.load(f)
     for playlist in playlists_data:
         cur.execute(
