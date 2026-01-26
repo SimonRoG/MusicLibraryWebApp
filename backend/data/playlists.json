@@ -1,0 +1,51 @@
+[
+	{
+		"name": "Morning Boost",
+		"user": "admin",
+		"tracks": [
+			"Dream On",
+			"180db_ [130]",
+			"Sonne"
+		]
+	},
+	{
+		"name": "Chill Vibes",
+		"user": "admin",
+		"tracks": [
+			"Golden Brown",
+			"Livin' La Vida Loca",
+			"Pilsplaat",
+			"Stray Bullet"
+		]
+	},
+	{
+		"name": "Party Mix",
+		"user": "admin",
+		"tracks": [
+			"Tequila",
+			"Megalomaniac",
+			"La Bamba",
+			"La Cucaracha",
+			"Where Is My Mind?"
+		]
+	},
+	{
+		"name": "Workout Hits",
+		"user": "Jeanette_Koss",
+		"tracks": [
+			"Ich will",
+			"The Original Theme from \"Blade\"",
+			"180db_ [130]",
+			"Dream On"
+		]
+	},
+	{
+		"name": "Retro Gold",
+		"user": "Gerald_Kilback89",
+		"tracks": [
+			"Golden Brown",
+			"Tequila",
+			"Livin' La Vida Loca"
+		]
+	}
+]

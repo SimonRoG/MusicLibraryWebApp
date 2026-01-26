@@ -1,0 +1,105 @@
+[
+	{
+		"title": "Syro",
+		"artist": "Aphex Twin",
+		"year": "2014",
+		"cover_image": "media/pics/Syro.jpg",
+		"tracks": [
+			"180db_ [130]",
+			"test-180db_ [130]"
+		]
+	},
+	{
+		"title": "Aerosmith",
+		"artist": "Aerosmith",
+		"year": "1972",
+		"cover_image": "media/pics/Aerosmith.jpg",
+		"tracks": [
+			"Dream On"
+		]
+	},
+	{
+		"title": "La Folie",
+		"artist": "The Stranglers",
+		"year": "1982",
+		"cover_image": "media/pics/La Folie.jpg",
+		"tracks": [
+			"Golden Brown"
+		]
+	},
+	{
+		"title": "Mutter",
+		"artist": "Rammstein",
+		"year": "2001",
+		"cover_image": "media/pics/Mutter.jpg",
+		"tracks": [
+			"Ich will",
+			"Sonne"
+		]
+	},
+	{
+		"title": "Mexican Fiesta",
+		"artist": "The Mariachis",
+		"year": "2017",
+		"cover_image": "media/pics/Mexican Fiesta.jpg",
+		"tracks": [
+			"La Bamba",
+			"La Cucaracha"
+		]
+	},
+	{
+		"title": "Ricky Martin",
+		"artist": "Ricky Martin",
+		"year": "1999",
+		"cover_image": "media/pics/Ricky Martin.jpg",
+		"tracks": [
+			"Livin' La Vida Loca"
+		]
+	},
+	{
+		"title": "Symbols",
+		"artist": "KMFDM",
+		"year": "1997",
+		"cover_image": "media/pics/Symbols.jpg",
+		"tracks": [
+			"Megalomaniac",
+			"Stray Bullet"
+		]
+	},
+	{
+		"title": "Pilsplaat",
+		"artist": "Bonkers",
+		"year": "2022",
+		"cover_image": "media/pics/Pilsplaat.jpg",
+		"tracks": [
+			"Pilsplaat"
+		]
+	},
+	{
+		"title": "Tequila",
+		"artist": "The Champs",
+		"year": "1994",
+		"cover_image": "media/pics/Tequila.jpg",
+		"tracks": [
+			"Tequila"
+		]
+	},
+	{
+		"title": "Missile",
+		"artist": "The Pump Panel",
+		"year": "1998",
+		"cover_image": "media/pics/Missile.jpg",
+		"tracks": [
+			"The Original Theme from \"Blade\""
+		]
+	},
+	{
+		"title": "Death to the Pixies",
+		"artist": "Pixies",
+		"year": "1997",
+		"cover_image": "media/pics/Death To The Pixies.jpg",
+		"tracks": [
+			"Where Is My Mind?"
+		]
+	}
+]
