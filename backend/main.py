@@ -1,4 +1,6 @@
+import os
 from fastapi import FastAPI, Depends, HTTPException, Body
+from fastapi.staticfiles import StaticFiles
 from typing import List, Optional
 from sqlalchemy.orm import Session
 
@@ -6,6 +8,9 @@ from db.db import SessionLocal
 from db import models, crud, schemas
 
 app = FastAPI(title="Music Library API")
+
+if os.path.exists("media"):
+    app.mount("/media", StaticFiles(directory="media"), name="media")
 
 
 def get_db():
