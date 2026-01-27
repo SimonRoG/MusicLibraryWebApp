@@ -51,10 +51,3 @@ create table if not exists playlist_tracks(
 	position int,
 	primary key (playlist_id, track_id)
 );
-
-create table if not exists albums_tracks(
-	album_id int references albums(id) on delete cascade,
-	track_id int references tracks(id) on delete cascade,
-	position int,
-	primary key (album_id, track_id)
-);

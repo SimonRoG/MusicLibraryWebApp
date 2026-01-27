@@ -103,22 +103,6 @@ with open("seed/tracks.csv", "r") as f:
             ),
         )
 
-with open("seed/albums.json", "r") as f:
-    albums_data = json.load(f)
-    for album in albums_data:
-        for position, track_title in enumerate(album["tracks"], start=1):
-            cur.execute(
-                """
-                insert into albums_tracks(album_id, track_id, position) 
-                    values (
-                        (select id from albums where title=%s limit 1),
-                        (select id from tracks where title=%s limit 1),
-                		%s)
-                on conflict do nothing
-                """,
-                (album["title"], track_title, position),
-            )
-
 with open("seed/playlists.json", "r") as f:
     playlists_data = json.load(f)
     for playlist in playlists_data:
