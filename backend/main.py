@@ -115,7 +115,7 @@ def delete_track(track_id: int, db: Session = Depends(get_db)):
 
 
 @app.get("/api/playlists", response_model=List[schemas.Playlist])
-def list_playlists(user_id: int, db: Session = Depends(get_db)):
+def list_playlists(user_id: Optional[int] = None, db: Session = Depends(get_db)):
     return crud.list_playlists_for_user(db, user_id=user_id)
 
 

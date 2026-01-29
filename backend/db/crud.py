@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func
 
 from . import models
+from sqlalchemy import or_
 
 
 # Users
@@ -196,7 +197,7 @@ def get_playlist(db: Session, playlist_id: int) -> Optional[models.Playlist]:
 def list_playlists_for_user(db: Session, *, user_id: int) -> Sequence[models.Playlist]:
     return (
         db.query(models.Playlist)
-        .filter(models.Playlist.user_id == user_id)
+        .filter(or_(models.Playlist.user_id == user_id, models.Playlist.user_id == 1))
         .order_by(models.Playlist.created_at.desc(), models.Playlist.id.desc())
         .all()
     )
