@@ -1,0 +1,35 @@
+ul.list {
+	list-style: none;
+	padding: 0;
+	text-align: left;
+
+	a {
+		text-decoration: none;
+		color: var(--text);
+	}
+
+	li {
+		padding: 8px;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		color: var(--text);
+
+		img {
+			margin: 0 0.5em;
+		}
+
+		.dash {
+			margin: 0 6px;
+		}
+	}
+
+	li:hover {
+		background-color: #888888;
+		color: var(--bg);
+
+		a {
+			color: var(--bg);
+		}
+	}
+}
