@@ -23,7 +23,7 @@ function TracksList() {
 								width="20px" />
 							{track.title}
 							<span className="dash"> - </span>
-							<a href="/api/artists">
+							<a href={`/artists/${track.artist_id}`}>
 								{artists.find(artist => artist.id === track.artist_id)?.name}
 							</a>
 						</li>
