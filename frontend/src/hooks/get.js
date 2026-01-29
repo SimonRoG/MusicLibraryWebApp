@@ -78,6 +78,27 @@ export function getPlaylistTracks(playlistId) {
 	return tracks;
 }
 
+export function getFirstPlaylistTrack(playlistId) {
+	const [track, setTrack] = useState(null);
+	useEffect(() => {
+		const fetchFirstTrack = async () => {
+			const res = await fetch(`/api/playlists/${playlistId}/tracks`);
+			const data = await res.json();
+			if (data.length > 0) {
+				data.sort((a, b) => a.position - b.position);
+				const firstTrackId = data[0].track_id;
+				const trackRes = await fetch(`/api/tracks/${firstTrackId}`);
+				const trackData = await trackRes.json();
+				setTrack(trackData);
+			} else {
+				setTrack(null);
+			}
+		};
+		fetchFirstTrack();
+	}, [playlistId]);
+	return track;
+}
+
 export function getArtists() {
 	const [artists, setArtists] = useState([]);
 	useEffect(() => {
