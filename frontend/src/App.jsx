@@ -1,22 +1,21 @@
 import React from 'react'
+import { Routes, Route } from 'react-router-dom';
 import './App.css'
-import {getUsers, getTracks, getTrackById, getPlaylists, getPlaylistById, getPlaylistTracks, getArtists, getGenres, getAlbums} from './hooks/get.js';
+import Navbar from './components/NavBar.jsx';
+import TracksList from './components/TracksList.jsx';
+import PlaylistsList from './components/PlaylistsList.jsx';
 
 function App() {
-	const users = getUsers();
-	const tracks = getTracks();
-	const playlists = getPlaylists();
-	const artists = getArtists();
-	const genres = getGenres();
-	const albums = getAlbums();
-
 	return (
 		<>
-			<ul>{tracks.map(track => (
-				<li key={track.id}>{track.title} - {artists.find(artist => artist.id === track.artist_id)?.name} - {albums.find(album => album.id === track.album_id)?.title} - {genres.find(genre => genre.id === track.genre_id)?.name}</li>
-			))}</ul>
+			<Navbar />
+			<Routes>
+				<Route path="/" element={<TracksList />} />
+				<Route path="/playlists" element={<PlaylistsList />} />
+				<Route path="*" element={<div>Not Found</div>} />
+			</Routes>
 		</>
 	)
 }
 
-export default App
+export default App;

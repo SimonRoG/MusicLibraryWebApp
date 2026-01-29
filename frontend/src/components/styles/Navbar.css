@@ -1,0 +1,33 @@
+nav {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 1em 0;
+	margin: 0 0 2em 0;
+	border-bottom: 1px solid var(--text);
+
+	.brand {
+		font-size: 1.5em;
+		font-weight: bold;
+
+		a {
+			text-decoration: none;
+			color: var(--text);
+		}
+	}
+
+	ul {
+		list-style: none;
+		display: flex;
+		gap: 1.5em;
+
+		a {
+			text-decoration: none;
+			color: var(--text);
+		}
+
+		a:hover {
+			opacity: 0.8;
+		}
+	}
+}
