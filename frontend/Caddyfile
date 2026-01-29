@@ -1,6 +1,17 @@
 :80 {
     root * /frontend/dist
+	
+	handle /api/* {
+		reverse_proxy backend:8000
+	}
+
+	handle /media/* {
+		reverse_proxy backend:8000
+	}
+
+	handle {
+		try_files {path} {path}/ /index.html
+	}
+
     file_server
-    reverse_proxy /api/* backend:8000
-    reverse_proxy /media/* backend:8000
 }
