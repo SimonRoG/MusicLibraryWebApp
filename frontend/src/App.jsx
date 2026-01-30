@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Routes, Route } from 'react-router-dom';
 import './App.css'
 import Navbar from './components/NavBar.jsx';
@@ -6,18 +6,65 @@ import SearchTracks from './components/SearchTracks.jsx';
 import PlaylistsList from './components/PlaylistsList.jsx';
 import AlbumsList from './components/AlbumsList.jsx';
 import ArtistsList from './components/ArtistsList.jsx';
+import Player from './components/Player.jsx';
+import { fetchTracksData } from './hooks/get.js';
 
 function App() {
+	const [queue, setQueue] = useState([]);
+	const [currentTrackIndex, setCurrentTrackIndex] = useState(-1);
+	const [contextParams, setContextParams] = useState(null);
+
+	const handlePlay = (track, tracks, params) => {
+		setQueue(tracks);
+		setContextParams(params);
+		setCurrentTrackIndex(tracks.findIndex(t => t.id === track.id));
+	};
+
+	const handleNext = async () => {
+		if (currentTrackIndex < queue.length - 1) {
+			setCurrentTrackIndex(currentTrackIndex + 1);
+		} else {
+			if (contextParams) {
+				const newTracks = await fetchTracksData({ ...contextParams, offset: queue.length, limit: 10 });
+				if (newTracks && newTracks.length > 0) {
+					setQueue(prev => [...prev, ...newTracks]);
+					setCurrentTrackIndex(currentTrackIndex + 1);
+				} else {
+					setCurrentTrackIndex(0);
+				}
+			} else {
+				setCurrentTrackIndex(0);
+			}
+		}
+	};
+
+	const handlePrev = () => {
+		if (currentTrackIndex > 0) {
+			setCurrentTrackIndex(currentTrackIndex - 1);
+		}
+	};
+
+	const currentTrack = currentTrackIndex >= 0 && currentTrackIndex < queue.length ? queue[currentTrackIndex] : null;
+
 	return (
 		<>
 			<Navbar />
 			<Routes>
-				<Route path="/" element={<SearchTracks />} />
+				<Route path="/" element={<SearchTracks onPlay={handlePlay} />} />
 				<Route path="/playlists" element={<PlaylistsList />} />
 				<Route path="/albums" element={<AlbumsList />} />
 				<Route path="/artists" element={<ArtistsList />} />
 				<Route path="*" element={<div>Not Found</div>} />
 			</Routes>
+			{currentTrack && (
+				<Player
+					track={currentTrack}
+					onNext={handleNext}
+					onPrev={handlePrev}
+					hasNext={true}
+					hasPrev={true}
+				/>
+			)}
 		</>
 	)
 }
