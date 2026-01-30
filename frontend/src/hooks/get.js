@@ -13,16 +13,24 @@ export function getUsers() {
 	return users;
 }
 
-export function getTracks() {
+export function getTracks({q, genre_id, artist_id, year, offset = 0, limit = 10} = {}) {
 	const [tracks, setTracks] = useState([]);
 	useEffect(() => {
+		const params = new URLSearchParams();
+		if (q) params.append('q', q);
+		if (genre_id) params.append('genre_id', genre_id);
+		if (artist_id) params.append('artist_id', artist_id);
+		if (year) params.append('year', year);
+		params.append('offset', offset);
+		params.append('limit', limit);
+
 		const fetchTracks = async () => {
-			const res = await fetch('/api/tracks');
+			const res = await fetch(`/api/tracks?${params.toString()}`);
 			const data = await res.json();
 			setTracks(data);
 		};
 		fetchTracks();
-	}, []);
+	}, [q, genre_id, artist_id, year, offset, limit]);
 	return tracks;
 }
 

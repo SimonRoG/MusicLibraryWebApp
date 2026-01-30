@@ -25,10 +25,37 @@ ul.list {
 	}
 
 	li:hover {
-		background-color: #888888;
+		background-color: var(--grey);
 		color: var(--bg);
 
 		a {
+			color: var(--bg);
+		}
+	}
+}
+
+.pages {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 1em;
+	gap: 1em;
+
+	button {
+		background: none;
+		border: 1px solid var(--text);
+		color: var(--text);
+		cursor: pointer;
+		padding: 0.25em 0.5em;
+		border-radius: 4px;
+
+		&:disabled {
+			opacity: 0.5;
+			cursor: not-allowed;
+		}
+
+		&:hover:not(:disabled) {
+			background-color: var(--grey);
 			color: var(--bg);
 		}
 	}
