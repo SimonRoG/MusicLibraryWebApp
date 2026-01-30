@@ -9,18 +9,39 @@ ul.list {
 	}
 
 	li {
-		padding: 8px;
-		cursor: pointer;
-		display: flex;
-		align-items: center;
-		color: var(--text);
+		.info {
+			display: flex;
+			align-items: center;
+			margin: 10px 0;
+			padding: 2px;
 
-		img {
-			margin: 0 0.5em;
-		}
+			img {
+				width: 50px;
+				height: 50px;
+				object-fit: cover;
+				margin: 0 20px 0 0;
+			}
 
-		.dash {
-			margin: 0 6px;
+			.details {
+				display: flex;
+				flex-direction: column;
+				overflow: hidden;
+
+				.title {
+					font-weight: bold;
+					font-size: 1.3em;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
+
+				.artist {
+					font-size: 0.8em;
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
+			}
 		}
 	}
 

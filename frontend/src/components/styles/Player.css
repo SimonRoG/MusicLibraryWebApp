@@ -15,8 +15,9 @@
 	.info {
 		display: flex;
 		align-items: center;
-		margin-left: 20px;
-		width: 200px;
+		margin: 0 20px;
+		flex-basis: 0;
+		flex-grow: 1;
 
 		img {
 			width: 50px;
@@ -48,8 +49,8 @@
 	}
 
 	.controls {
-		flex-grow: 1;
-		max-width: 600px;
+		flex-basis: 0;
+		flex-grow: 2;
 		margin: 0 20px;
 		display: flex;
 		align-items: center;
@@ -87,6 +88,7 @@
 	}
 
 	.spacer {
-		width: 200px;
+		flex-basis: 0;
+		flex-grow: 1;
 	}
 }
