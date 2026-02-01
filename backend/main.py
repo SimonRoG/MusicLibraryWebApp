@@ -1,5 +1,7 @@
 import os
-from fastapi import FastAPI, Depends, HTTPException, Body
+import shutil
+import uuid
+from fastapi import FastAPI, Depends, HTTPException, Body, File, UploadFile
 from fastapi.staticfiles import StaticFiles
 from typing import List, Optional
 from sqlalchemy.orm import Session
@@ -197,6 +199,14 @@ def list_artists(limit: int = 100, offset: int = 0, db: Session = Depends(get_db
     return crud.list_artists(db, limit=limit, offset=offset)
 
 
+@app.post("/api/artists", response_model=schemas.Artist)
+def create_artist(artist: schemas.ArtistBase, db: Session = Depends(get_db)):
+    db_artist = crud.get_artist_by_name(db, name=artist.name)
+    if db_artist:
+        return db_artist
+    return crud.create_artist(db, name=artist.name, description=artist.description)
+
+
 # Genres
 
 
@@ -211,3 +221,36 @@ def list_genres(limit: int = 100, offset: int = 0, db: Session = Depends(get_db)
 @app.get("/api/albums", response_model=List[schemas.Album])
 def list_albums(limit: int = 100, offset: int = 0, db: Session = Depends(get_db)):
     return crud.list_albums(db, limit=limit, offset=offset)
+
+
+@app.post("/api/albums", response_model=schemas.Album)
+def create_album(album: schemas.AlbumBase, db: Session = Depends(get_db)):
+    if not album.artist_id:
+        raise HTTPException(status_code=400, detail="artist_id is required")
+    db_album = crud.get_album_by_title_and_artist(
+        db, title=album.title, artist_id=album.artist_id
+    )
+    if db_album:
+        return db_album
+    return crud.create_album(
+        db,
+        title=album.title,
+        artist_id=album.artist_id,
+        release_year=album.release_year,
+        cover_image=album.cover_image,
+    )
+
+
+# Uplaod files
+
+
+@app.post("/api/upload")
+async def upload_file(file: UploadFile = File(...)):
+    upload_dir = "media/uploads"
+    os.makedirs(upload_dir, exist_ok=True)
+    file_extension = os.path.splitext(file.filename)[1]
+    file_name = f"{uuid.uuid4()}{file_extension}"
+    file_path = os.path.join(upload_dir, file_name)
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+    return {"filename": file_path}

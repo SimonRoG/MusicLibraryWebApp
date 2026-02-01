@@ -52,6 +52,24 @@ def get_artist(db: Session, artist_id: int) -> Optional[models.Artist]:
     return db.query(models.Artist).filter(models.Artist.id == artist_id).first()
 
 
+def get_artist_by_name(db: Session, name: str) -> Optional[models.Artist]:
+    return (
+        db.query(models.Artist)
+        .filter(func.lower(models.Artist.name) == name.lower())
+        .first()
+    )
+
+
+def create_artist(
+    db: Session, name: str, description: Optional[str] = None
+) -> models.Artist:
+    artist = models.Artist(name=name, description=description)
+    db.add(artist)
+    db.commit()
+    db.refresh(artist)
+    return artist
+
+
 # Genre
 
 
@@ -88,6 +106,38 @@ def list_albums(
 
 def get_album(db: Session, album_id: int) -> Optional[models.Album]:
     return db.query(models.Album).filter(models.Album.id == album_id).first()
+
+
+def get_album_by_title_and_artist(
+    db: Session, title: str, artist_id: int
+) -> Optional[models.Album]:
+    return (
+        db.query(models.Album)
+        .filter(
+            func.lower(models.Album.title) == title.lower(),
+            models.Album.artist_id == artist_id,
+        )
+        .first()
+    )
+
+
+def create_album(
+    db: Session,
+    title: str,
+    artist_id: int,
+    release_year: Optional[int] = None,
+    cover_image: Optional[str] = None,
+) -> models.Album:
+    album = models.Album(
+        title=title,
+        artist_id=artist_id,
+        release_year=release_year,
+        cover_image=cover_image,
+    )
+    db.add(album)
+    db.commit()
+    db.refresh(album)
+    return album
 
 
 # Tracks
