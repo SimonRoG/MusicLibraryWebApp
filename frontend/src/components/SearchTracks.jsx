@@ -46,6 +46,8 @@ function SearchTracks({ onPlay }) {
 					placeholder="Year"
 					value={year}
 					onChange={(e) => setYear(e.target.value)}
+					min="1900"
+					max="2100"
 				/>
 			</div>
 
