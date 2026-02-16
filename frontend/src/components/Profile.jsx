@@ -43,6 +43,10 @@ const Profile = ({ token, onLogout }) => {
 		return <div className="error-message">{error}</div>;
 	}
 
+	if (!user) {
+		return <div>Loading...</div>;
+	}
+
 	return (
 		<div className="profile-container">
 			<h2>User Profile</h2>
