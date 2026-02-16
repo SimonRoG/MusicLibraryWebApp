@@ -1,13 +1,16 @@
 import os
 import shutil
 import uuid
-from fastapi import FastAPI, Depends, HTTPException, Body, File, UploadFile
+from fastapi import FastAPI, Depends, HTTPException, Body, File, UploadFile, status
 from fastapi.staticfiles import StaticFiles
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from typing import List, Optional
 from sqlalchemy.orm import Session
+from jose import JWTError, jwt
 
 from db.db import SessionLocal
 from db import models, crud, schemas
+from core import security
 
 app = FastAPI(title="Music Library API")
 
@@ -23,12 +26,55 @@ def get_db():
         db.close()
 
 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+
+@app.post("/token", response_model=schemas.Token)
+async def login_for_access_token(
+    form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
+):
+    user = crud.get_user_by_username(db, username=form_data.username)
+    if not user or not security.verify_password(form_data.password, user.password_hash):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect username or password",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    access_token = security.create_access_token(data={"sub": user.username})
+    return {"access_token": access_token, "token_type": "bearer"}
+
+
 # Users
 
 
 @app.get("/api/users", response_model=List[schemas.User])
 def list_users(db: Session = Depends(get_db)):
     return db.query(models.User).all()
+
+
+@app.get("/api/users/me", response_model=schemas.User)
+async def get_current_user(
+    token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)
+):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(
+            token, security.SECRET_KEY, algorithms=[security.ALGORITHM]
+        )
+        username: str = payload.get("sub")
+        if username is None:
+            raise credentials_exception
+        token_data = schemas.TokenData(username=username)
+    except JWTError:
+        raise credentials_exception
+    user = crud.get_user_by_username(db, username=token_data.username)
+    if user is None:
+        raise credentials_exception
+    return user
 
 
 @app.post("/api/users", response_model=schemas.User)
@@ -40,7 +86,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
         db=db,
         username=user.username,
         email=user.email,
-        password_hash=user.password_hash,
+        password_hash=security.get_password_hash(user.password),
     )
 
 

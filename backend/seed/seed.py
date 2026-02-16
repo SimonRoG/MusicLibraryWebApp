@@ -3,10 +3,10 @@ import csv
 import json
 import psycopg
 from dotenv import load_dotenv
-import hashlib
-
+from passlib.context import CryptContext
 
 load_dotenv()
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 DATABASE_URL = os.getenv(
@@ -53,7 +53,7 @@ with open("seed/users.csv", "r") as f:
             (
                 row["username"],
                 row["email"],
-                hashlib.sha256(row["password"].encode()).hexdigest(),
+                pwd_context.hash(row["password"]),
             ),
         )
 
