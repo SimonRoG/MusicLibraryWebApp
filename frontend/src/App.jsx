@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect } from 'react'
+import { Routes, Route, Navigate } from 'react-router-dom';
 import './App.css'
 import Navbar from './components/NavBar.jsx';
 import SearchTracks from './components/SearchTracks.jsx';
@@ -7,12 +7,25 @@ import PlaylistsList from './components/PlaylistsList.jsx';
 import AlbumsList from './components/AlbumsList.jsx';
 import ArtistsList from './components/ArtistsList.jsx';
 import Player from './components/Player.jsx';
+import Login from './components/Login.jsx';
+import Profile from './components/Profile.jsx';
 import { fetchTracksData } from './hooks/get.js';
 
 function App() {
 	const [queue, setQueue] = useState([]);
 	const [currentTrackIndex, setCurrentTrackIndex] = useState(-1);
 	const [contextParams, setContextParams] = useState(null);
+	const [token, setToken] = useState(localStorage.getItem('token') || null);
+
+	const handleLogin = (newToken) => {
+		localStorage.setItem('token', newToken);
+		setToken(newToken);
+	};
+
+	const handleLogout = () => {
+		localStorage.removeItem('token');
+		setToken(null);
+	};
 
 	const handlePlay = (track, tracks, params) => {
 		setQueue(tracks);
@@ -48,12 +61,14 @@ function App() {
 
 	return (
 		<>
-			<Navbar />
+			<Navbar token={token} />
 			<Routes>
 				<Route path="/" element={<SearchTracks onPlay={handlePlay} />} />
 				<Route path="/playlists" element={<PlaylistsList />} />
 				<Route path="/albums" element={<AlbumsList />} />
 				<Route path="/artists" element={<ArtistsList />} />
+				<Route path="/login" element={token ? <Navigate to="/profile" /> : <Login onLogin={handleLogin} />} />
+				<Route path="/profile" element={<Profile token={token} onLogout={handleLogout} />} />
 				<Route path="*" element={<div>Not Found</div>} />
 			</Routes>
 			{currentTrack && (

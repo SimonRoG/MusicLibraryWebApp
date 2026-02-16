@@ -1,0 +1,38 @@
+.profile-container {
+	max-width: 400px;
+	margin: 50px auto;
+	padding: 20px;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	background-color: var(--bg);
+
+	h2 {
+		text-align: center;
+		margin-bottom: 20px;
+	}
+
+	.details {
+		margin-bottom: 20px;
+
+		p {
+			margin: 10px 0;
+			font-size: 1.1em;
+		}
+	}
+
+	.logout-btn {
+		width: 100%;
+		font-size: 15px;
+		background: none;
+		border: 1px solid var(--text);
+		color: var(--text);
+		cursor: pointer;
+		padding: 0.25em 0.5em;
+		border-radius: 4px;
+
+		&:hover {
+			background-color: var(--grey);
+			color: var(--bg);
+		}
+	}
+}

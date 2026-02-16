@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './styles/Navbar.css';
 
-const Navbar = () => {
+const Navbar = ({ token }) => {
 	return (
 		<nav>
 			<div className="brand"><Link to="/">MusLi</Link></div>
@@ -11,6 +11,11 @@ const Navbar = () => {
 				<li><Link to="/playlists">Playlists</Link></li>
 				<li><Link to="/albums">Albums</Link></li>
 				<li><Link to="/artists">Artists</Link></li>
+				{token ? (
+					<li><Link to="/profile">Profile</Link></li>
+				) : (
+					<li><Link to="/login">Login</Link></li>
+				)}
 			</ul>
 		</nav>
 	);
