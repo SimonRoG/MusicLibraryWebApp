@@ -25,3 +25,8 @@ html {
 	color: var(--text);
 	font: normal 15px sans-serif;
 }
+
+a {
+	color: var(--text);
+	text-decoration: none;
+}
