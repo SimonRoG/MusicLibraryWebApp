@@ -1,0 +1,41 @@
+import React from 'react'
+import { useParams, Link } from 'react-router-dom';
+import { getArtistById, getAlbums } from '../hooks/get.js';
+import './styles/Lists.css';
+
+function Artist() {
+	const { id } = useParams();
+	const albums = getAlbums({ artist_id: id });
+	const artist = getArtistById(id);
+
+	if (!artist) return <div>Loading...</div>;
+
+	return (
+		<>
+			<div>
+				<h2>{artist.name}</h2>
+				{artist.description && <p>{artist.description}</p>}
+			</div>
+			<ul className="list">
+				{albums.map(album => (
+					<Link to={`/albums/${album.id}`} key={album.id}>
+						<li>
+							<div className="info">
+								<img
+									src={`/${album.cover_image}`}
+									alt={album.title}
+								/>
+								<div className="details">
+									<span className="title">{album.title}</span>
+									<span className="artist">{album.release_year}</span>
+								</div>
+							</div>
+						</li>
+					</Link>
+				))}
+			</ul>
+		</>
+	);
+}
+
+export default Artist;

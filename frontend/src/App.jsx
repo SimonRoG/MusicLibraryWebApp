@@ -8,6 +8,7 @@ import Playlist from './components/Playlist.jsx';
 import AlbumsList from './components/AlbumsList.jsx';
 import Album from './components/Album.jsx';
 import ArtistsList from './components/ArtistsList.jsx';
+import Artist from './components/Artist.jsx';
 import Player from './components/Player.jsx';
 import Login from './components/Login.jsx';
 import Profile from './components/Profile.jsx';
@@ -72,6 +73,7 @@ function App() {
 				<Route path="/albums" element={<AlbumsList />} />
 				<Route path="/albums/:id" element={<Album onPlay={handlePlay} />} />
 				<Route path="/artists" element={<ArtistsList />} />
+				<Route path="/artists/:id" element={<Artist />} />
 				<Route path="/login" element={token ? <Navigate to="/profile" /> : <Login onLogin={handleLogin} />} />
 				<Route path="/profile" element={token ? <Profile token={token} onLogout={handleLogout} /> : <Navigate to="/login" />} />
 				<Route path="*" element={<div>Not Found</div>} />
