@@ -52,6 +52,10 @@ def get_artist(db: Session, artist_id: int) -> Optional[models.Artist]:
     return db.query(models.Artist).filter(models.Artist.id == artist_id).first()
 
 
+def get_artist(db: Session, artist_id: int) -> Optional[models.Artist]:
+    return db.query(models.Artist).filter(models.Artist.id == artist_id).first()
+
+
 def get_artist_by_name(db: Session, name: str) -> Optional[models.Artist]:
     return (
         db.query(models.Artist)
@@ -93,15 +97,12 @@ def get_genre(db: Session, genre_id: int) -> Optional[models.Genre]:
 
 
 def list_albums(
-    db: Session, *, limit: int = 200, offset: int = 0
+    db: Session, *, artist_id: Optional[int] = None, limit: int = 200, offset: int = 0
 ) -> Sequence[models.Album]:
-    return (
-        db.query(models.Album)
-        .order_by(models.Album.title)
-        .offset(offset)
-        .limit(limit)
-        .all()
-    )
+    query = db.query(models.Album)
+    if artist_id:
+        query = query.filter(models.Album.artist_id == artist_id)
+    return query.order_by(models.Album.title).offset(offset).limit(limit).all()
 
 
 def get_album(db: Session, album_id: int) -> Optional[models.Album]:

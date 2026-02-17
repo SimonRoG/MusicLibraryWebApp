@@ -247,6 +247,14 @@ def list_artists(limit: int = 100, offset: int = 0, db: Session = Depends(get_db
     return crud.list_artists(db, limit=limit, offset=offset)
 
 
+@app.get("/api/artists/{artist_id}", response_model=schemas.Artist)
+def get_artist(artist_id: int, db: Session = Depends(get_db)):
+    artist = crud.get_artist(db, artist_id=artist_id)
+    if not artist:
+        raise HTTPException(status_code=404, detail="Artist not found")
+    return artist
+
+
 @app.post("/api/artists", response_model=schemas.Artist)
 def create_artist(artist: schemas.ArtistBase, db: Session = Depends(get_db)):
     db_artist = crud.get_artist_by_name(db, name=artist.name)
@@ -267,8 +275,13 @@ def list_genres(limit: int = 100, offset: int = 0, db: Session = Depends(get_db)
 
 
 @app.get("/api/albums", response_model=List[schemas.Album])
-def list_albums(limit: int = 100, offset: int = 0, db: Session = Depends(get_db)):
-    return crud.list_albums(db, limit=limit, offset=offset)
+def list_albums(
+    artist_id: Optional[int] = None,
+    limit: int = 100,
+    offset: int = 0,
+    db: Session = Depends(get_db),
+):
+    return crud.list_albums(db, artist_id=artist_id, limit=limit, offset=offset)
 
 
 @app.get("/api/albums/{album_id}", response_model=schemas.Album)

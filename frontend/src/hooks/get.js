@@ -13,7 +13,7 @@ export function getUsers() {
 	return users;
 }
 
-export const fetchTracksData = async ({q, genre_id, artist_id, album_id, year, offset = 0, limit = 10} = {}) => {
+export const fetchTracksData = async ({ q, genre_id, artist_id, album_id, year, offset = 0, limit = 10 } = {}) => {
 	const params = new URLSearchParams();
 	if (q) params.append('q', q);
 	if (genre_id) params.append('genre_id', genre_id);
@@ -27,11 +27,11 @@ export const fetchTracksData = async ({q, genre_id, artist_id, album_id, year, o
 	return await res.json();
 };
 
-export function getTracks({q, genre_id, artist_id, album_id, year, offset = 0, limit = 10} = {}) {
+export function getTracks({ q, genre_id, artist_id, album_id, year, offset = 0, limit = 10 } = {}) {
 	const [tracks, setTracks] = useState([]);
 	useEffect(() => {
 		const fetchTracks = async () => {
-			const data = await fetchTracksData({q, genre_id, artist_id, album_id, year, offset, limit});
+			const data = await fetchTracksData({ q, genre_id, artist_id, album_id, year, offset, limit });
 			setTracks(data);
 		};
 		fetchTracks();
@@ -127,6 +127,22 @@ export function getArtists() {
 	return artists;
 }
 
+export function getArtistById(artistId) {
+	const [artist, setArtist] = useState(null);
+	useEffect(() => {
+		const fetchArtist = async () => {
+			if (!artistId) return;
+			const res = await fetch(`/api/artists/${artistId}`);
+			if (res.ok) {
+				const data = await res.json();
+				setArtist(data);
+			}
+		};
+		fetchArtist();
+	}, [artistId]);
+	return artist;
+}
+
 export function getGenres() {
 	const [genres, setGenres] = useState([]);
 	useEffect(() => {
@@ -156,15 +172,17 @@ export function getAlbumById(albumId) {
 	return album;
 }
 
-export function getAlbums() {
+export function getAlbums({ artist_id } = {}) {
 	const [albums, setAlbums] = useState([]);
 	useEffect(() => {
 		const fetchAlbums = async () => {
-			const res = await fetch('/api/albums');
+			const params = new URLSearchParams();
+			if (artist_id) params.append('artist_id', artist_id);
+			const res = await fetch(`/api/albums?${params.toString()}`);
 			const data = await res.json();
 			setAlbums(data);
 		};
 		fetchAlbums();
-	}, []);
+	}, [artist_id]);
 	return albums;
 }
