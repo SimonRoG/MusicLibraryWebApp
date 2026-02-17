@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import { getUsers, getTracks, getTrackById, getPlaylists, getPlaylistById, getPlaylistTracks, getArtists, getGenres, getAlbums } from '../hooks/get.js';
 import './styles/Lists.css';
 
@@ -14,20 +15,24 @@ function AlbumsList() {
 		<>
 			<ul className="list">
 				{albums.map(album => (
-					<a href={`albums/${album.id}`}>
-						<li key={album.id}>
-							<img
-								src={`/${album.cover_image}`}
-								alt={album.title}
-								height="20px"
-								width="20px" />
-							{album.title}
-							<span className="dash"> - </span>
-							<a href={`/artists/${album.artist_id}`}>
-								{artists.find(artist => artist.id === album.artist_id)?.name}
-							</a>
+					<Link to={`/albums/${album.id}`} key={album.id}>
+						<li>
+							<div className="info">
+								<img
+									src={`/${album.cover_image}`}
+									alt={album.title}
+								/>
+								<div className="details">
+									<span className="title">{album.title}</span>
+									<span className="artist">
+										<Link to={`/artists/${album.artist_id}`}>
+											{artists.find(artist => artist.id === album.artist_id)?.name}
+										</Link>
+									</span>
+								</div>
+							</div>
 						</li>
-					</a>
+					</Link>
 				))}
 			</ul>
 		</>

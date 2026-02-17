@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom';
 import { getUsers, getTracks, getTrackById, getPlaylists, getPlaylistById, getPlaylistTracks, getArtists, getGenres, getAlbums } from '../hooks/get.js';
 import './styles/Lists.css';
 
@@ -35,9 +36,9 @@ function TracksList({ q, genre_id, artist_id, year, initialLimit = 10, onPlay } 
 							<div className="details">
 								<span className="title">{track.title}</span>
 								<span className="artist" onClick={(e) => e.stopPropagation()}>
-									<a href={`/artists/${track.artist_id}`}>
+									<Link to={`/artists/${track.artist_id}`}>
 										{artists.find(artist => artist.id === track.artist_id)?.name}
-									</a>
+									</Link>
 								</span>
 							</div>
 						</div>

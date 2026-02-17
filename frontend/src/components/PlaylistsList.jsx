@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 import { getUsers, getTracks, getTrackById, getPlaylists, getPlaylistById, getPlaylistTracks, getFirstPlaylistTrack, getArtists, getGenres, getAlbums } from '../hooks/get.js';
 import './styles/Lists.css';
 
@@ -7,19 +8,24 @@ function PlaylistListItem({ playlist, albums, users }) {
 	const album = firstTrack ? albums.find(album => album.id === firstTrack.album_id) : null;
 
 	return (
-		<a href={`playlists/${playlist.id}`}>
+		<Link to={`/playlists/${playlist.id}`}>
 			<li>
-				{album && (
-					<img
-						src={`/${album.cover_image}`}
-						alt={album.title}
-						height="20px"
-						width="20px"
-					/>
-				)}
-				{playlist.name}
+				<div className="info">
+					{album && (
+						<img
+							src={`/${album.cover_image}`}
+							alt={album.title}
+						/>
+					)}
+					<div className="details">
+						<span className="title">{playlist.name}</span>
+						<span className="artist">
+							{playlist.user_id === 1 ? "MusLi" : users.find(user => user.id === playlist.user_id)?.username}
+						</span>
+					</div>
+				</div>
 			</li>
-		</a>
+		</Link>
 	);
 }
 
