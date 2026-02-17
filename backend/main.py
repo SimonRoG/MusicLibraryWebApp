@@ -98,6 +98,7 @@ def list_tracks(
     q: Optional[str] = None,
     genre_id: Optional[int] = None,
     artist_id: Optional[int] = None,
+    album_id: Optional[int] = None,
     year: Optional[int] = None,
     owner_id: Optional[int] = None,
     limit: int = 50,
@@ -109,6 +110,7 @@ def list_tracks(
         q=q,
         genre_id=genre_id,
         artist_id=artist_id,
+        album_id=album_id,
         year=year,
         owner_id=owner_id,
         limit=limit,
@@ -267,6 +269,14 @@ def list_genres(limit: int = 100, offset: int = 0, db: Session = Depends(get_db)
 @app.get("/api/albums", response_model=List[schemas.Album])
 def list_albums(limit: int = 100, offset: int = 0, db: Session = Depends(get_db)):
     return crud.list_albums(db, limit=limit, offset=offset)
+
+
+@app.get("/api/albums/{album_id}", response_model=schemas.Album)
+def get_album(album_id: int, db: Session = Depends(get_db)):
+    album = crud.get_album(db, album_id=album_id)
+    if not album:
+        raise HTTPException(status_code=404, detail="Album not found")
+    return album
 
 
 @app.post("/api/albums", response_model=schemas.Album)

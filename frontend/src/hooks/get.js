@@ -13,11 +13,12 @@ export function getUsers() {
 	return users;
 }
 
-export const fetchTracksData = async ({q, genre_id, artist_id, year, offset = 0, limit = 10} = {}) => {
+export const fetchTracksData = async ({q, genre_id, artist_id, album_id, year, offset = 0, limit = 10} = {}) => {
 	const params = new URLSearchParams();
 	if (q) params.append('q', q);
 	if (genre_id) params.append('genre_id', genre_id);
 	if (artist_id) params.append('artist_id', artist_id);
+	if (album_id) params.append('album_id', album_id);
 	if (year) params.append('year', year);
 	params.append('offset', offset);
 	params.append('limit', limit);
@@ -26,15 +27,15 @@ export const fetchTracksData = async ({q, genre_id, artist_id, year, offset = 0,
 	return await res.json();
 };
 
-export function getTracks({q, genre_id, artist_id, year, offset = 0, limit = 10} = {}) {
+export function getTracks({q, genre_id, artist_id, album_id, year, offset = 0, limit = 10} = {}) {
 	const [tracks, setTracks] = useState([]);
 	useEffect(() => {
 		const fetchTracks = async () => {
-			const data = await fetchTracksData({q, genre_id, artist_id, year, offset, limit});
+			const data = await fetchTracksData({q, genre_id, artist_id, album_id, year, offset, limit});
 			setTracks(data);
 		};
 		fetchTracks();
-	}, [q, genre_id, artist_id, year, offset, limit]);
+	}, [q, genre_id, artist_id, album_id, year, offset, limit]);
 	return tracks;
 }
 
@@ -137,6 +138,22 @@ export function getGenres() {
 		fetchGenres();
 	}, []);
 	return genres;
+}
+
+export function getAlbumById(albumId) {
+	const [album, setAlbum] = useState(null);
+	useEffect(() => {
+		const fetchAlbum = async () => {
+			if (!albumId) return;
+			const res = await fetch(`/api/albums/${albumId}`);
+			if (res.ok) {
+				const data = await res.json();
+				setAlbum(data);
+			}
+		};
+		fetchAlbum();
+	}, [albumId]);
+	return album;
 }
 
 export function getAlbums() {

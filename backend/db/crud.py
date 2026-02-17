@@ -153,6 +153,7 @@ def list_tracks(
     q: Optional[str] = None,
     genre_id: Optional[int] = None,
     artist_id: Optional[int] = None,
+    album_id: Optional[int] = None,
     year: Optional[int] = None,
     owner_id: Optional[int] = None,
     limit: int = 50,
@@ -165,6 +166,8 @@ def list_tracks(
         query = query.filter(models.Track.genre_id == genre_id)
     if artist_id:
         query = query.filter(models.Track.artist_id == artist_id)
+    if album_id:
+        query = query.filter(models.Track.album_id == album_id)
     if year:
         query = query.filter(models.Track.release_year == year)
     if owner_id:
