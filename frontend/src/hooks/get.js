@@ -83,7 +83,9 @@ export function getPlaylistTracks(playlistId) {
 		const fetchPlaylistTracks = async () => {
 			const res = await fetch(`/api/playlists/${playlistId}/tracks`);
 			const data = await res.json();
-			setTracks(data);
+			const trackPromises = data.map(pt => fetch(`/api/tracks/${pt.track_id}`).then(r => r.json()));
+			const detailedTracks = await Promise.all(trackPromises);
+			setTracks(detailedTracks);
 		};
 		fetchPlaylistTracks();
 	}, [playlistId]);

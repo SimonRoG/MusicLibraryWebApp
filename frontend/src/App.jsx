@@ -4,6 +4,7 @@ import './App.css'
 import Navbar from './components/NavBar.jsx';
 import SearchTracks from './components/SearchTracks.jsx';
 import PlaylistsList from './components/PlaylistsList.jsx';
+import Playlist from './components/Playlist.jsx';
 import AlbumsList from './components/AlbumsList.jsx';
 import ArtistsList from './components/ArtistsList.jsx';
 import Player from './components/Player.jsx';
@@ -66,6 +67,7 @@ function App() {
 				<Route path="/" element={<Navigate to="/tracks" />} />
 				<Route path="/tracks" element={<SearchTracks onPlay={handlePlay} />} />
 				<Route path="/playlists" element={<PlaylistsList />} />
+				<Route path="/playlists/:id" element={<Playlist onPlay={handlePlay} />} />
 				<Route path="/albums" element={<AlbumsList />} />
 				<Route path="/artists" element={<ArtistsList />} />
 				<Route path="/login" element={token ? <Navigate to="/profile" /> : <Login onLogin={handleLogin} />} />
