@@ -63,12 +63,13 @@ function App() {
 		<>
 			<Navbar token={token} />
 			<Routes>
-				<Route path="/" element={<SearchTracks onPlay={handlePlay} />} />
+				<Route path="/" element={<Navigate to="/tracks" />} />
+				<Route path="/tracks" element={<SearchTracks onPlay={handlePlay} />} />
 				<Route path="/playlists" element={<PlaylistsList />} />
 				<Route path="/albums" element={<AlbumsList />} />
 				<Route path="/artists" element={<ArtistsList />} />
 				<Route path="/login" element={token ? <Navigate to="/profile" /> : <Login onLogin={handleLogin} />} />
-				<Route path="/profile" element={<Profile token={token} onLogout={handleLogout} />} />
+				<Route path="/profile" element={token ? <Profile token={token} onLogout={handleLogout} /> : <Navigate to="/login" />} />
 				<Route path="*" element={<div>Not Found</div>} />
 			</Routes>
 			{currentTrack && (

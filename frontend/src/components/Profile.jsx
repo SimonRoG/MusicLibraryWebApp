@@ -8,11 +8,6 @@ const Profile = ({ token, onLogout }) => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (!token) {
-			navigate('/login');
-			return;
-		}
-
 		const fetchUser = async () => {
 			try {
 				const response = await fetch('/api/users/me', {
