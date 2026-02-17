@@ -6,6 +6,7 @@ import SearchTracks from './components/SearchTracks.jsx';
 import PlaylistsList from './components/PlaylistsList.jsx';
 import Playlist from './components/Playlist.jsx';
 import AlbumsList from './components/AlbumsList.jsx';
+import Album from './components/Album.jsx';
 import ArtistsList from './components/ArtistsList.jsx';
 import Player from './components/Player.jsx';
 import Login from './components/Login.jsx';
@@ -69,6 +70,7 @@ function App() {
 				<Route path="/playlists" element={<PlaylistsList />} />
 				<Route path="/playlists/:id" element={<Playlist onPlay={handlePlay} />} />
 				<Route path="/albums" element={<AlbumsList />} />
+				<Route path="/albums/:id" element={<Album onPlay={handlePlay} />} />
 				<Route path="/artists" element={<ArtistsList />} />
 				<Route path="/login" element={token ? <Navigate to="/profile" /> : <Login onLogin={handleLogin} />} />
 				<Route path="/profile" element={token ? <Profile token={token} onLogout={handleLogout} /> : <Navigate to="/login" />} />
