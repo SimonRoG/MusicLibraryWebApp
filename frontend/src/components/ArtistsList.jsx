@@ -1,15 +1,10 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import { getUsers, getTracks, getTrackById, getPlaylists, getPlaylistById, getPlaylistTracks, getArtists, getGenres, getAlbums } from '../hooks/get.js';
+import { getArtists } from '../hooks/get.js';
 import './styles/Lists.css';
 
 function ArtistsList() {
-	const users = getUsers();
-	const tracks = getTracks();
-	const playlists = getPlaylists();
 	const artists = getArtists();
-	const genres = getGenres();
-	const albums = getAlbums();
 
 	return (
 		<>

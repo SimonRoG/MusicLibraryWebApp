@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
-import { getUsers, getTracks, getTrackById, getPlaylists, getPlaylistById, getPlaylistTracks, getFirstPlaylistTrack, getArtists, getGenres, getAlbums } from '../hooks/get.js';
+import { getUsers, getPlaylists, getFirstPlaylistTrack, getAlbums } from '../hooks/get.js';
 import './styles/Lists.css';
 
 function PlaylistListItem({ playlist, albums, users }) {
@@ -31,10 +31,7 @@ function PlaylistListItem({ playlist, albums, users }) {
 
 function PlaylistsList() {
 	const users = getUsers();
-	const tracks = getTracks();
 	const playlists = getPlaylists();
-	const artists = getArtists();
-	const genres = getGenres();
 	const albums = getAlbums();
 
 	return (

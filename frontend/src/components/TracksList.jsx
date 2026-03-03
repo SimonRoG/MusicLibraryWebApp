@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
-import { getUsers, getTracks, getTrackById, getPlaylists, getPlaylistById, getPlaylistTracks, getArtists, getGenres, getAlbums } from '../hooks/get.js';
+import { getTracks, getArtists, getAlbums } from '../hooks/get.js';
 import './styles/Lists.css';
 
 function TracksList({ q, genre_id, artist_id, year, initialLimit = 10, onPlay } = {}) {
@@ -8,11 +8,8 @@ function TracksList({ q, genre_id, artist_id, year, initialLimit = 10, onPlay } 
 	const limit = initialLimit;
 	const offset = (page - 1) * limit;
 
-	const users = getUsers();
 	const tracks = getTracks({ q, genre_id, artist_id, year, offset, limit });
-	const playlists = getPlaylists();
 	const artists = getArtists();
-	const genres = getGenres();
 	const albums = getAlbums();
 
 	const handlePrev = () => {
