@@ -95,6 +95,10 @@ export function getPlaylistTracks(playlistId) {
 		const fetchPlaylistTracks = async () => {
 			const res = await fetchWithAuth(`/api/playlists/${playlistId}/tracks`);
 			const data = await res.json();
+			if (!Array.isArray(data)) {
+				setTracks(data);
+				return;
+			}
 			const trackPromises = data.map(pt => fetchWithAuth(`/api/tracks/${pt.track_id}`).then(r => r.json()));
 			const detailedTracks = await Promise.all(trackPromises);
 			setTracks(detailedTracks);

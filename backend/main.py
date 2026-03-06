@@ -198,8 +198,7 @@ def get_playlist(
     current_user: Optional[models.User] = Depends(get_current_user_optional),
     db: Session = Depends(get_db),
 ):
-    user_id = current_user.id if current_user else None
-    pl = crud.get_playlist(db, playlist_id, user_id)
+    pl = crud.get_playlist(db, playlist_id)
     if not pl:
         raise HTTPException(status_code=404, detail="Playlist not found")
     return pl
@@ -244,6 +243,16 @@ def list_playlist_tracks(
     current_user: Optional[models.User] = Depends(get_current_user_optional),
 ):
     user_id = current_user.id if current_user else None
+    pl = crud.get_playlist(db, playlist_id)
+    if pl.user_id != 1 and user_id != 1 and not user_id:
+        raise HTTPException(
+            status_code=401,
+            detail="Authentication required to view tracks in this playlist",
+        )
+    elif pl.user_id != 1 and user_id != 1 and pl.user_id != user_id:
+        raise HTTPException(
+            status_code=403, detail="Not authorized to view tracks in this playlist"
+        )
     return crud.list_playlist_tracks(db, playlist_id=playlist_id, user_id=user_id)
 
 
