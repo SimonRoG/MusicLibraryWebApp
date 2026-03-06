@@ -14,6 +14,9 @@ function Playlist({ onPlay }) {
 	if (!playlist)
 		return <div>Loading...</div>;
 
+	if (playlist.detail)
+		return <div><h2>{playlist.detail}</h2></div>;
+
 	const owner = playlist.user_id === 1 ? 'MusLi' : users.find(u => u.id === playlist.user_id)?.username || 'Unknown';
 
 	return (
@@ -22,8 +25,9 @@ function Playlist({ onPlay }) {
 				<h2>{playlist.name}</h2>
 				<p>Owner: {owner}</p>
 			</div>
+			{tracks.detail && <div><h2>{tracks.detail}</h2></div>}
 			<ul className="list">
-				{tracks.map(track => {
+				{Array.isArray(tracks) && tracks.map(track => {
 					const album = albums.find(a => a.id === track.album_id);
 					const artist = artists.find(a => a.id === track.artist_id);
 

@@ -244,6 +244,8 @@ def list_playlist_tracks(
 ):
     user_id = current_user.id if current_user else None
     pl = crud.get_playlist(db, playlist_id)
+    if not pl:
+        raise HTTPException(status_code=404, detail="Playlist not found")
     if pl.user_id != 1 and user_id != 1 and not user_id:
         raise HTTPException(
             status_code=401,
