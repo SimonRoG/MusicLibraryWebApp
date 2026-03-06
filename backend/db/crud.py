@@ -244,17 +244,8 @@ def delete_track(db: Session, *, track: models.Track) -> None:
 # Playlists
 
 
-def get_playlist(
-    db: Session, playlist_id: int, user_id: int
-) -> Optional[models.Playlist]:
-    return (
-        db.query(models.Playlist)
-        .filter(
-            models.Playlist.id == playlist_id,
-            # or_(models.Playlist.user_id == user_id, models.Playlist.user_id == 1),
-        )
-        .first()
-    )
+def get_playlist(db: Session, playlist_id: int) -> Optional[models.Playlist]:
+    return db.query(models.Playlist).filter(models.Playlist.id == playlist_id).first()
 
 
 def list_playlists_for_user(db: Session, *, user_id: int) -> Sequence[models.Playlist]:
