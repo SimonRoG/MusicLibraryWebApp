@@ -1,4 +1,15 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useState, useEffect } from 'react';
+
+const fetchWithAuth = (url, options = {}) => {
+	const token = localStorage.getItem('token');
+	const headers = { ...options.headers };
+	if (token) {
+		headers['Authorization'] = `Bearer ${token}`;
+	}
+	const f = window.fetch;
+	return f(url, { ...options, headers });
+};
 
 export function getUsers() {
 	const [users, setUsers] = useState([]);
@@ -56,7 +67,7 @@ export function getPlaylists() {
 	const [playlists, setPlaylists] = useState([]);
 	useEffect(() => {
 		const fetchPlaylists = async () => {
-			const res = await fetch('/api/playlists');
+			const res = await fetchWithAuth('/api/playlists');
 			const data = await res.json();
 			setPlaylists(data);
 		};
@@ -69,7 +80,7 @@ export function getPlaylistById(playlistId) {
 	const [playlist, setPlaylist] = useState(null);
 	useEffect(() => {
 		const fetchPlaylist = async () => {
-			const res = await fetch(`/api/playlists/${playlistId}`);
+			const res = await fetchWithAuth(`/api/playlists/${playlistId}`);
 			const data = await res.json();
 			setPlaylist(data);
 		};
@@ -82,9 +93,9 @@ export function getPlaylistTracks(playlistId) {
 	const [tracks, setTracks] = useState([]);
 	useEffect(() => {
 		const fetchPlaylistTracks = async () => {
-			const res = await fetch(`/api/playlists/${playlistId}/tracks`);
+			const res = await fetchWithAuth(`/api/playlists/${playlistId}/tracks`);
 			const data = await res.json();
-			const trackPromises = data.map(pt => fetch(`/api/tracks/${pt.track_id}`).then(r => r.json()));
+			const trackPromises = data.map(pt => fetchWithAuth(`/api/tracks/${pt.track_id}`).then(r => r.json()));
 			const detailedTracks = await Promise.all(trackPromises);
 			setTracks(detailedTracks);
 		};
@@ -97,12 +108,12 @@ export function getFirstPlaylistTrack(playlistId) {
 	const [track, setTrack] = useState(null);
 	useEffect(() => {
 		const fetchFirstTrack = async () => {
-			const res = await fetch(`/api/playlists/${playlistId}/tracks`);
+			const res = await fetchWithAuth(`/api/playlists/${playlistId}/tracks`);
 			const data = await res.json();
 			if (data.length > 0) {
 				data.sort((a, b) => a.position - b.position);
 				const firstTrackId = data[0].track_id;
-				const trackRes = await fetch(`/api/tracks/${firstTrackId}`);
+				const trackRes = await fetchWithAuth(`/api/tracks/${firstTrackId}`);
 				const trackData = await trackRes.json();
 				setTrack(trackData);
 			} else {

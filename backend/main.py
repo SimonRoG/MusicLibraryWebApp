@@ -27,6 +27,7 @@ def get_db():
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme_optional = OAuth2PasswordBearer(tokenUrl="token", auto_error=False)
 
 
 @app.post("/token", response_model=schemas.Token)
@@ -75,6 +76,24 @@ async def get_current_user(
     if user is None:
         raise credentials_exception
     return user
+
+
+async def get_current_user_optional(
+    token: Optional[str] = Depends(oauth2_scheme_optional),
+    db: Session = Depends(get_db),
+):
+    if not token:
+        return None
+    try:
+        payload = jwt.decode(
+            token, security.SECRET_KEY, algorithms=[security.ALGORITHM]
+        )
+        username: str = payload.get("sub")
+        if username is None:
+            return None
+    except JWTError:
+        return None
+    return crud.get_user_by_username(db, username=username)
 
 
 @app.post("/api/users", response_model=schemas.User)
@@ -165,13 +184,22 @@ def delete_track(track_id: int, db: Session = Depends(get_db)):
 
 
 @app.get("/api/playlists", response_model=List[schemas.Playlist])
-def list_playlists(user_id: Optional[int] = None, db: Session = Depends(get_db)):
+def list_playlists(
+    current_user: Optional[models.User] = Depends(get_current_user_optional),
+    db: Session = Depends(get_db),
+):
+    user_id = current_user.id if current_user else None
     return crud.list_playlists_for_user(db, user_id=user_id)
 
 
 @app.get("/api/playlists/{playlist_id}", response_model=schemas.Playlist)
-def get_playlist(playlist_id: int, db: Session = Depends(get_db)):
-    pl = crud.get_playlist(db, playlist_id)
+def get_playlist(
+    playlist_id: int,
+    current_user: Optional[models.User] = Depends(get_current_user_optional),
+    db: Session = Depends(get_db),
+):
+    user_id = current_user.id if current_user else None
+    pl = crud.get_playlist(db, playlist_id, user_id)
     if not pl:
         raise HTTPException(status_code=404, detail="Playlist not found")
     return pl
@@ -210,8 +238,13 @@ def delete_playlist(playlist_id: int, db: Session = Depends(get_db)):
 @app.get(
     "/api/playlists/{playlist_id}/tracks", response_model=List[schemas.PlaylistTrack]
 )
-def list_playlist_tracks(playlist_id: int, db: Session = Depends(get_db)):
-    return crud.list_playlist_tracks(db, playlist_id=playlist_id)
+def list_playlist_tracks(
+    playlist_id: int,
+    db: Session = Depends(get_db),
+    current_user: Optional[models.User] = Depends(get_current_user_optional),
+):
+    user_id = current_user.id if current_user else None
+    return crud.list_playlist_tracks(db, playlist_id=playlist_id, user_id=user_id)
 
 
 @app.post(

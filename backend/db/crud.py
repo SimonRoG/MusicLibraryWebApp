@@ -244,11 +244,26 @@ def delete_track(db: Session, *, track: models.Track) -> None:
 # Playlists
 
 
-def get_playlist(db: Session, playlist_id: int) -> Optional[models.Playlist]:
-    return db.query(models.Playlist).filter(models.Playlist.id == playlist_id).first()
+def get_playlist(
+    db: Session, playlist_id: int, user_id: int
+) -> Optional[models.Playlist]:
+    return (
+        db.query(models.Playlist)
+        .filter(
+            models.Playlist.id == playlist_id,
+            # or_(models.Playlist.user_id == user_id, models.Playlist.user_id == 1),
+        )
+        .first()
+    )
 
 
 def list_playlists_for_user(db: Session, *, user_id: int) -> Sequence[models.Playlist]:
+    if user_id == 1:
+        return (
+            db.query(models.Playlist)
+            .order_by(models.Playlist.created_at.desc(), models.Playlist.id.desc())
+            .all()
+        )
     return (
         db.query(models.Playlist)
         .filter(or_(models.Playlist.user_id == user_id, models.Playlist.user_id == 1))
@@ -300,17 +315,23 @@ def get_or_create_saved_playlist(db: Session, *, user_id: int) -> models.Playlis
 
 
 def list_playlist_tracks(
-    db: Session, *, playlist_id: int
+    db: Session, playlist_id: int, user_id: int
 ) -> Sequence[models.PlaylistTrack]:
-    return (
+    tracks = (
         db.query(models.PlaylistTrack)
         .filter(models.PlaylistTrack.playlist_id == playlist_id)
         .order_by(
             models.PlaylistTrack.position.asc().nulls_last(),
             models.PlaylistTrack.track_id.asc(),
         )
-        .all()
     )
+    if user_id == 1:
+        return tracks.all()
+    return tracks.filter(
+        models.PlaylistTrack.playlist.has(
+            or_(models.Playlist.user_id == user_id, models.Playlist.user_id == 1)
+        ),
+    ).all()
 
 
 def add_track_to_playlist(
