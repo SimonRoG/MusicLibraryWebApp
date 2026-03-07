@@ -1,8 +1,13 @@
-.player {
+.player-wrapper {
 	position: fixed;
 	bottom: 0;
 	left: 0;
 	width: 100%;
+	z-index: 1001;
+}
+
+.player {
+	position: relative;
 	background-color: #1e1e1e;
 	color: #d4d4d4;
 	padding: 10px;
@@ -10,7 +15,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	z-index: 1000;
+	z-index: 2;
 
 	.info {
 		display: flex;
@@ -18,6 +23,12 @@
 		margin: 0 20px;
 		flex-basis: 0;
 		flex-grow: 1;
+		cursor: pointer;
+		transition: opacity 0.1s;
+
+		&:hover {
+			opacity: 0.9;
+		}
 
 		img {
 			width: 50px;
@@ -90,5 +101,46 @@
 	.spacer {
 		flex-basis: 0;
 		flex-grow: 1;
+	}
+}
+
+.info-dropdown {
+	position: absolute;
+	bottom: 100%;
+	left: 0;
+	background-color: #1e1e1e;
+	color: #d4d4d4;
+	padding: 30px 50px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	box-shadow: 0 0px 15px #d4d4d4;
+	border-radius: 0 10px 0 0;
+	z-index: 1;
+	animation: slideUp 0.3s ease-out;
+
+	.large-cover {
+		width: 200px;
+		height: 200px;
+		margin-bottom: 20px;
+	}
+
+	.dropdown-details {
+		text-align: center;
+		width: 100%;
+
+		p {
+			margin: 5px 0;
+		}
+	}
+}
+
+@keyframes slideUp {
+	from {
+		transform: translateY(100%);
+	}
+
+	to {
+		transform: translateY(0);
 	}
 }

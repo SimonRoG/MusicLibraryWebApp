@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { getAlbums, getArtists } from '../hooks/get.js';
+import { getAlbums, getArtists, getGenres } from '../hooks/get.js';
 import './styles/Player.css';
 
 function Player({ track, onNext, onPrev, hasNext, hasPrev }) {
@@ -7,8 +7,10 @@ function Player({ track, onNext, onPrev, hasNext, hasPrev }) {
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [currentTime, setCurrentTime] = useState(0);
 	const [duration, setDuration] = useState(0);
+	const [showInfo, setShowInfo] = useState(false);
 	const albums = getAlbums();
 	const artists = getArtists();
+	const genres = getGenres();
 
 	useEffect(() => {
 		const audio = audioRef.current;
@@ -58,43 +60,59 @@ function Player({ track, onNext, onPrev, hasNext, hasPrev }) {
 
 	const album = albums.find(a => a.id === track.album_id);
 	const artist = artists.find(a => a.id === track.artist_id);
+	const genre = genres.find(g => g.id === track.genre_id);
 
 	return (
-		<div className="player">
-			<div className="info">
-				{album?.cover_image && (
-					<img
-						src={`/${album.cover_image}`}
-						alt={track.title}
-					/>
-				)}
-				<div className="details">
-					<span className="title">{track.title}</span>
-					<span className="artist">{artist?.name}</span>
+		<div className="player-wrapper">
+			{showInfo && (
+				<div className="info-dropdown">
+					{album?.cover_image && (
+						<img src={`/${album.cover_image}`} alt={track.title} className="large-cover" />
+					)}
+					<div className="dropdown-details">
+						<h2>{track.title}</h2>
+						<p className="artist-name">{artist?.name || 'Unknown Artist'}</p>
+						<p className="album-name">{album?.title || 'Unknown Album'}</p>
+						{genre && <p className="genre-tag">{genre.name}</p>}
+					</div>
 				</div>
+			)}
+			<div className="player">
+				<div className="info" onClick={() => setShowInfo(!showInfo)}>
+					{album?.cover_image && (
+						<img
+							src={`/${album.cover_image}`}
+							alt={track.title}
+						/>
+					)}
+					<div className="details">
+						<span className="title">{track.title}</span>
+						<span className="artist">{artist?.name}</span>
+					</div>
+				</div>
+				<div className="controls">
+					<button className="ctrl-btn" onClick={onPrev} disabled={!hasPrev}>{'⏮️'}</button>
+					<button className="ctrl-btn" onClick={() => isPlaying ? audioRef.current.pause() : audioRef.current.play()}>
+						{isPlaying ? '⏸️' : '▶️'}
+					</button>
+					<button className="ctrl-btn" onClick={onNext} disabled={!hasNext}>{'⏭️'}</button>
+					<input
+						className="seek-slider"
+						type="range"
+						min={0}
+						max={duration || 0}
+						value={currentTime}
+						onChange={handleSeek}
+					/>
+					<span className="time">{formatTime(currentTime)}</span>
+					<span>/</span>
+					<span className="time">{formatTime(duration)}</span>
+					<audio ref={audioRef} autoPlay onEnded={hasNext ? onNext : undefined}>
+						<source src={`/${track.audio_file}`} type="audio/mpeg" />
+					</audio>
+				</div>
+				<div className="spacer"></div>
 			</div>
-			<div className="controls">
-				<button className="ctrl-btn" onClick={onPrev} disabled={!hasPrev}>{'⏮️'}</button>
-				<button className="ctrl-btn" onClick={() => isPlaying ? audioRef.current.pause() : audioRef.current.play()}>
-					{isPlaying ? '⏸️' : '▶️'}
-				</button>
-				<button className="ctrl-btn" onClick={onNext} disabled={!hasNext}>{'⏭️'}</button>
-				<input
-					className="seek-slider"
-					type="range"
-					min={0}
-					max={duration || 0}
-					value={currentTime}
-					onChange={handleSeek}
-				/>
-				<span className="time">{formatTime(currentTime)}</span>
-				<span>/</span>
-				<span className="time">{formatTime(duration)}</span>
-				<audio ref={audioRef} autoPlay onEnded={hasNext ? onNext : undefined}>
-					<source src={`/${track.audio_file}`} type="audio/mpeg" />
-				</audio>
-			</div>
-			<div className="spacer"></div>
 		</div>
 	);
 }
