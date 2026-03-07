@@ -119,6 +119,18 @@
 	z-index: 1;
 	animation: slideUp 0.3s ease-out;
 
+	.close-btn {
+		position: absolute;
+		top: 15px;
+		right: 15px;
+		background: none;
+		border: none;
+		color: #d4d4d4;
+		font-size: 1.5rem;
+		cursor: pointer;
+		line-height: 1;
+	}
+
 	.large-cover {
 		width: 200px;
 		height: 200px;

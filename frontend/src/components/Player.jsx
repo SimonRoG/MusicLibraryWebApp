@@ -67,6 +67,7 @@ function Player({ track, onNext, onPrev, hasNext, hasPrev }) {
 		<div className="player-wrapper">
 			{showInfo && (
 				<div className="info-dropdown">
+					<button className="close-btn" onClick={() => setShowInfo(false)}>✕</button>
 					{album?.cover_image && (
 						<img src={`/${album.cover_image}`} alt={track.title} className="large-cover" />
 					)}
