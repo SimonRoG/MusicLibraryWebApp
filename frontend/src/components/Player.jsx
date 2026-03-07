@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { getAlbums, getArtists, getGenres } from '../hooks/get.js';
 import './styles/Player.css';
 
@@ -71,9 +72,9 @@ function Player({ track, onNext, onPrev, hasNext, hasPrev }) {
 					)}
 					<div className="dropdown-details">
 						<h2>{track.title}</h2>
-						<p className="artist-name">{artist?.name || 'Unknown Artist'}</p>
-						<p className="album-name">{album?.title || 'Unknown Album'}</p>
-						{genre && <p className="genre-tag">{genre.name}</p>}
+						<p><Link to={`/artists/${artist?.id}`}>{artist?.name || 'Unknown Artist'}</Link></p>
+						<p><Link to={`/albums/${album?.id}`}>{album?.title || 'Unknown Album'}</Link></p>
+						{genre && <p>{genre.name}</p>}
 					</div>
 				</div>
 			)}
