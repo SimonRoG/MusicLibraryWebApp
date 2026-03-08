@@ -63,7 +63,7 @@ function App() {
 	const currentTrack = currentTrackIndex >= 0 && currentTrackIndex < queue.length ? queue[currentTrackIndex] : null;
 
 	return (
-		<>
+		<div style={{ paddingBottom: currentTrack ? '80px' : '0' }}>
 			<Navbar token={token} />
 			<Routes>
 				<Route path="/" element={<Navigate to="/tracks" />} />
@@ -87,7 +87,7 @@ function App() {
 					hasPrev={true}
 				/>
 			)}
-		</>
+		</div>
 	)
 }
 
