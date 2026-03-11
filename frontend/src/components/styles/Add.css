@@ -1,0 +1,107 @@
+.add {
+	position: fixed;
+	bottom: 30px;
+	right: 30px;
+	z-index: 1000;
+
+	.add-btn {
+		width: 60px;
+		height: 60px;
+		border-radius: 50%;
+		background-color: var(--text);
+		color: var(--bg);
+		border: none;
+		font-size: 36px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		cursor: pointer;
+		box-shadow: 0 0 10px #00000088;
+
+		&:hover {
+			transform: scale(1.05);
+			background-color: var(--grey);
+		}
+	}
+
+	.add-modal-overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100vw;
+		height: 100vh;
+		background-color: #00000088;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		z-index: 1001;
+
+		.add-modal {
+			background-color: var(--bg);
+			color: var(--text);
+			padding: 30px;
+			border-radius: 10px;
+			width: 500px;
+			box-shadow: 0 0 10px #00000088;
+			display: flex;
+			flex-direction: column;
+			gap: 15px;
+
+			h2 {
+				margin: 0 0 5px 0;
+			}
+
+			form {
+				display: flex;
+				flex-direction: column;
+				gap: 15px;
+
+				input,
+				select,
+				textarea {
+					width: 100%;
+					padding: 10px;
+					border: 1px solid var(--grey);
+					border-radius: 5px;
+					background-color: transparent;
+					color: var(--text);
+				}
+
+				.actions {
+					display: flex;
+					justify-content: flex-end;
+					gap: 10px;
+					margin-top: 10px;
+
+					button {
+						padding: 10px 15px;
+						border: none;
+						border-radius: 5px;
+						cursor: pointer;
+						font-weight: bold;
+
+						&.submit-btn {
+							background-color: var(--text);
+							color: var(--bg);
+
+							&:hover {
+								background-color: var(--grey);
+								color: #fff;
+							}
+						}
+
+						&.cancel-btn {
+							background-color: transparent;
+							color: var(--grey);
+
+							&:hover {
+								background-color: var(--grey);
+								color: #fff;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

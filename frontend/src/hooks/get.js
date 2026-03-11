@@ -24,6 +24,23 @@ export function getUsers() {
 	return users;
 }
 
+export function getUser(token) {
+	const [user, setUser] = useState(null);
+
+	useEffect(() => {
+		if (!token) return;
+
+		const fetchUser = async () => {
+			const res = await fetchWithAuth('/api/users/me');
+			const data = await res.json();
+			setUser(data);
+		};
+		fetchUser();
+	}, [token]);
+
+	return user;
+}
+
 export const fetchTracksData = async ({ q, genre_id, artist_id, album_id, year, offset = 0, limit = 10 } = {}) => {
 	const params = new URLSearchParams();
 	if (q) params.append('q', q);
