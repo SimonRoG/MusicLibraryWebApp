@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import './styles/Add.css';
+import './styles/AddTrack.css';
 import { getUser, getArtists, getAlbums, getGenres } from '../hooks/get';
 import { uploadFileData, createArtistData, createAlbumData, createTrackData } from '../hooks/post';
 
-export default function Add({ token, style }) {
+export default function AddTrack({ token, style }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [title, setTitle] = useState('');
 	const [artistName, setArtistName] = useState('');
