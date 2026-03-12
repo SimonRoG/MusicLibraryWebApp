@@ -131,7 +131,11 @@ export default function AddTrack({ token, style }) {
 								required
 							/>
 							<datalist id="albums-list">
-								{Array.from(new Set(albums.map(a => a.title))).map((title, idx) => (
+								{Array.from(new Set(albums.filter(a => {
+									if (!artistName) return true;
+									const artist = artists.find(ar => ar.name.toLowerCase() === artistName.toLowerCase());
+									return artist ? a.artist_id === artist.id : true;
+								}).map(a => a.title))).map((title, idx) => (
 									<option key={idx} value={title} />
 								))}
 							</datalist>
