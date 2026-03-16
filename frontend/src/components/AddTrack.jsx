@@ -15,12 +15,12 @@ export default function AddTrack({ token, style }) {
 
 	const [loading, setLoading] = useState(false);
 
-	if (!token) return null;
-
 	const user = getUser(token);
 	const artists = getArtists();
 	const albums = getAlbums();
 	const genres = getGenres();
+
+	if (!token) return null;
 
 	const toggleModal = () => {
 		setIsOpen(!isOpen);
