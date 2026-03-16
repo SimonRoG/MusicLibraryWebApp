@@ -9,7 +9,7 @@ load_dotenv()
 
 SECRET_KEY = os.getenv("SECRET_KEY", "secretkey")
 ALGORITHM = os.getenv("ALGORITHM", "HS256")
-TOKEN_EXPIRE = int(os.getenv("TOKEN_EXPIRE", 60))
+TOKEN_EXPIRE = int(os.getenv("TOKEN_EXPIRE", 24 * 60))
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
