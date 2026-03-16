@@ -1,31 +1,30 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { getUsers, getPlaylists, getFirstPlaylistTrack, getAlbums } from '../hooks/get.js';
 import './styles/Lists.css';
 
 function PlaylistListItem({ playlist, albums, users }) {
 	const firstTrack = getFirstPlaylistTrack(playlist.id);
 	const album = firstTrack ? albums.find(album => album.id === firstTrack.album_id) : null;
+	const navigate = useNavigate();
 
 	return (
-		<Link to={`/playlists/${playlist.id}`}>
-			<li>
-				<div className="info">
-					{album && (
-						<img
-							src={`/${album.cover_image}`}
-							alt={album.title}
-						/>
-					)}
-					<div className="details">
-						<span className="title">{playlist.name}</span>
-						<span className="artist">
-							{playlist.user_id === 1 ? "MusLi" : users.find(user => user.id === playlist.user_id)?.username}
-						</span>
-					</div>
+		<li onClick={() => navigate(`/playlists/${playlist.id}`)} style={{ cursor: 'pointer' }}>
+			<div className="info">
+				{album && (
+					<img
+						src={`/${album.cover_image}`}
+						alt={album.title}
+					/>
+				)}
+				<div className="details">
+					<span className="title">{playlist.name}</span>
+					<span className="artist">
+						{playlist.user_id === 1 ? "MusLi" : users.find(user => user.id === playlist.user_id)?.username}
+					</span>
 				</div>
-			</li>
-		</Link>
+			</div>
+		</li>
 	);
 }
 

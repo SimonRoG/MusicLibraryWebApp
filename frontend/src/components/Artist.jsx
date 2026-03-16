@@ -1,5 +1,5 @@
 import React from 'react'
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { getArtistById, getAlbums } from '../hooks/get.js';
 import './styles/Lists.css';
 
@@ -7,6 +7,7 @@ function Artist() {
 	const { id } = useParams();
 	const albums = getAlbums({ artist_id: id });
 	const artist = getArtistById(id);
+	const navigate = useNavigate();
 
 	if (!artist) return <div>Loading...</div>;
 
@@ -18,20 +19,18 @@ function Artist() {
 			</div>
 			<ul className="list">
 				{albums.map(album => (
-					<Link to={`/albums/${album.id}`} key={album.id}>
-						<li>
-							<div className="info">
-								<img
-									src={`/${album.cover_image}`}
-									alt={album.title}
-								/>
-								<div className="details">
-									<span className="title">{album.title}</span>
-									<span className="artist">{album.release_year}</span>
-								</div>
+					<li key={album.id} onClick={() => navigate(`/albums/${album.id}`)} style={{ cursor: 'pointer' }}>
+						<div className="info">
+							<img
+								src={`/${album.cover_image}`}
+								alt={album.title}
+							/>
+							<div className="details">
+								<span className="title">{album.title}</span>
+								<span className="artist">{album.release_year}</span>
 							</div>
-						</li>
-					</Link>
+						</div>
+					</li>
 				))}
 			</ul>
 		</>
