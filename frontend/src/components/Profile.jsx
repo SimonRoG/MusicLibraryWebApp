@@ -42,6 +42,11 @@ const Profile = ({ token, onLogout }) => {
 		return <div>Loading...</div>;
 	}
 
+	const handleLogoutClick = () => {
+		onLogout();
+		navigate('/login');
+	};
+
 	return (
 		<div className="profile-container">
 			<h2>User Profile</h2>
@@ -50,7 +55,7 @@ const Profile = ({ token, onLogout }) => {
 				<p><strong>Email:</strong> {user.email}</p>
 				<p><strong>Joined:</strong> {new Date(user.created_at).toLocaleDateString()}</p>
 			</div>
-			<button onClick={onLogout} className="logout-btn">Logout</button>
+			<button onClick={handleLogoutClick} className="logout-btn">Logout</button>
 		</div>
 	);
 };

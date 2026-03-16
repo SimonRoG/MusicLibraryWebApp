@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './styles/Login.css';
 
 const Login = ({ onLogin }) => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
+	const navigate = useNavigate();
 
 	const handleLogin = async (e) => {
 		e.preventDefault();
@@ -30,6 +32,7 @@ const Login = ({ onLogin }) => {
 
 			const data = await response.json();
 			onLogin(data.access_token);
+			navigate('/profile');
 		} catch (err) {
 			setError(err.message);
 		}
