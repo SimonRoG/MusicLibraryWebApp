@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
-
 const fetchWithAuth = (url, options = {}) => {
 	const token = localStorage.getItem('token');
 	const headers = { ...options.headers };
@@ -41,6 +39,15 @@ export const createAlbumData = async (title, artist_id) => {
 export const createTrackData = async (payload) => {
 	const res = await fetchWithAuth('/api/tracks', {
 		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(payload)
+	});
+	return await res.json();
+};
+
+export const updateTrackData = async (id, payload) => {
+	const res = await fetchWithAuth(`/api/tracks/${id}`, {
+		method: 'PATCH',
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(payload)
 	});

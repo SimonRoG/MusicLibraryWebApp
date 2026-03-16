@@ -82,6 +82,7 @@ function App() {
 			<AddTrack token={token} style={{ bottom: currentTrack ? '90px' : '30px' }} />
 			{currentTrack && (
 				<Player
+					token={token}
 					track={currentTrack}
 					onNext={handleNext}
 					onPrev={handlePrev}

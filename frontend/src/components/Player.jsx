@@ -1,17 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getAlbums, getArtists, getGenres } from '../hooks/get.js';
+import { getAlbums, getArtists, getGenres, getUser } from '../hooks/get.js';
 import './styles/Player.css';
+import EditTrack from './EditTrack.jsx';
 
-function Player({ track, onNext, onPrev, hasNext, hasPrev }) {
+function Player({ track, token, onNext, onPrev, hasNext, hasPrev }) {
 	const audioRef = useRef(null);
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [currentTime, setCurrentTime] = useState(0);
 	const [duration, setDuration] = useState(0);
 	const [showInfo, setShowInfo] = useState(false);
+	const [showEdit, setShowEdit] = useState(false);
 	const albums = getAlbums();
 	const artists = getArtists();
 	const genres = getGenres();
+
+	const user = token ? getUser(token) : null;
 
 	useEffect(() => {
 		const audio = audioRef.current;
@@ -76,8 +80,18 @@ function Player({ track, onNext, onPrev, hasNext, hasPrev }) {
 						<p><Link to={`/artists/${artist?.id}`}>{artist?.name || 'Unknown Artist'}</Link></p>
 						<p><Link to={`/albums/${album?.id}`}>{album?.title || 'Unknown Album'}</Link></p>
 						{genre && <p>{genre.name}</p>}
+						{user && user.id === track.owner_id && (
+							<button onClick={() => setShowEdit(true)}>Edit</button>
+						)}
 					</div>
 				</div>
+			)}
+			{showEdit && (
+				<EditTrack
+					token={token}
+					track={track}
+					onClose={() => setShowEdit(false)}
+				/>
 			)}
 			<div className="player">
 				<div className="info" onClick={() => setShowInfo(!showInfo)}>
