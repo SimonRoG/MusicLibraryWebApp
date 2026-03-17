@@ -267,7 +267,16 @@ def add_track_to_playlist(
     track_id: int,
     position: Optional[int] = Body(None, embed=True),
     db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
 ):
+    pl = crud.get_playlist(db, playlist_id)
+    if not pl:
+        raise HTTPException(status_code=404, detail="Playlist not found")
+    if pl.user_id != current_user.id and current_user.id != 1:
+        raise HTTPException(
+            status_code=403, detail="Not authorized to edit this playlist"
+        )
+
     return crud.add_track_to_playlist(
         db, playlist_id=playlist_id, track_id=track_id, position=position
     )

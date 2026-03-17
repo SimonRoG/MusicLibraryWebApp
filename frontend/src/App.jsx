@@ -12,6 +12,7 @@ import Artist from './components/Artist.jsx';
 import AddTrack from './components/AddTrack';
 import AddAlbum from './components/AddAlbum';
 import AddPlaylist from './components/AddPlaylist';
+import AddTrackToPlaylist from './components/AddTrackToPlaylist';
 import Player from './components/Player.jsx';
 import Login from './components/Login.jsx';
 import Profile from './components/Profile.jsx';
@@ -66,6 +67,9 @@ function App() {
 
 	const currentTrack = currentTrackIndex >= 0 && currentTrackIndex < queue.length ? queue[currentTrackIndex] : null;
 
+	const playlistIdMatch = location.pathname.match(/^\/playlists\/(\d+)$/);
+	const playlistId = playlistIdMatch ? playlistIdMatch[1] : null;
+
 	return (
 		<div style={{ paddingBottom: currentTrack ? '80px' : '0' }}>
 			<Navbar token={token} />
@@ -82,6 +86,7 @@ function App() {
 				<Route path="/profile" element={token ? <Profile token={token} onLogout={handleLogout} /> : <Navigate to="/login" />} />
 				<Route path="*" element={<div>Not Found</div>} />
 			</Routes>
+			{playlistId && <AddTrackToPlaylist token={token} playlistId={playlistId} style={{ bottom: currentTrack ? '90px' : '30px' }} />}
 			{location.pathname === '/tracks' && <AddTrack token={token} style={{ bottom: currentTrack ? '90px' : '30px' }} />}
 			{location.pathname === '/albums' && <AddAlbum token={token} style={{ bottom: currentTrack ? '90px' : '30px' }} />}
 			{location.pathname === '/playlists' && <AddPlaylist token={token} style={{ bottom: currentTrack ? '90px' : '30px' }} />}
