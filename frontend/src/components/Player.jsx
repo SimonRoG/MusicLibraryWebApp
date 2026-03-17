@@ -15,7 +15,7 @@ function Player({ track, token, onNext, onPrev, hasNext, hasPrev }) {
 	const artists = getArtists();
 	const genres = getGenres();
 
-	const user = token ? getUser(token) : null;
+	const user = getUser(token);
 
 	useEffect(() => {
 		const audio = audioRef.current;
@@ -42,9 +42,14 @@ function Player({ track, token, onNext, onPrev, hasNext, hasPrev }) {
 	useEffect(() => {
 		if (track && audioRef.current) {
 			audioRef.current.load();
-			audioRef.current.play().catch(error => {
-				console.error("Autoplay prevents automatic playback without interaction.", error);
-			});
+			const playPromise = audioRef.current.play();
+			if (playPromise !== undefined) {
+				playPromise.catch(error => {
+					if (error.name !== 'AbortError') {
+						console.error("Error playing audio:", error);
+					}
+				});
+			}
 		}
 	}, [track]);
 
