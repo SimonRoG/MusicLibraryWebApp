@@ -1,6 +1,7 @@
 import os
 import csv
 import json
+import time
 import psycopg
 from dotenv import load_dotenv
 from passlib.context import CryptContext
@@ -13,8 +14,14 @@ DATABASE_URL = os.getenv(
     "DATABASE_URL", "postgresql://user:password@localhost:5432/music_lib"
 )
 
+while True:
+    try:
+        conn = psycopg.connect(DATABASE_URL)
+        break
+    except psycopg.OperationalError:
+        print("Database not ready")
+        time.sleep(5)
 
-conn = psycopg.connect(DATABASE_URL)
 cur = conn.cursor()
 
 with open("seed/genres.csv", "r") as f:
