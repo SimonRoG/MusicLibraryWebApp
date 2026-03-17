@@ -209,7 +209,7 @@ def create_track(
     db.commit()
     db.refresh(track)
 
-    if add_to_saved:
+    if add_to_saved and owner_id != 1:
         saved = get_or_create_saved_playlist(db, user_id=owner_id)
         add_track_to_playlist(db, playlist_id=saved.id, track_id=track.id)
 
