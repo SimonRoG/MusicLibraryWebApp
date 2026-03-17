@@ -53,3 +53,12 @@ export const updateTrackData = async (id, payload) => {
 	});
 	return await res.json();
 };
+
+export const createPlaylistData = async (name, user_id) => {
+	const res = await fetchWithAuth('/api/playlists', {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ name, user_id })
+	});
+	return await res.json();
+};

@@ -11,6 +11,7 @@ import ArtistsList from './components/ArtistsList.jsx';
 import Artist from './components/Artist.jsx';
 import AddTrack from './components/AddTrack';
 import AddAlbum from './components/AddAlbum';
+import AddPlaylist from './components/AddPlaylist';
 import Player from './components/Player.jsx';
 import Login from './components/Login.jsx';
 import Profile from './components/Profile.jsx';
@@ -83,6 +84,7 @@ function App() {
 			</Routes>
 			{location.pathname === '/tracks' && <AddTrack token={token} style={{ bottom: currentTrack ? '90px' : '30px' }} />}
 			{location.pathname === '/albums' && <AddAlbum token={token} style={{ bottom: currentTrack ? '90px' : '30px' }} />}
+			{location.pathname === '/playlists' && <AddPlaylist token={token} style={{ bottom: currentTrack ? '90px' : '30px' }} />}
 			{currentTrack && (
 				<Player
 					token={token}
