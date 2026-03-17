@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import './App.css'
 import Navbar from './components/NavBar.jsx';
 import SearchTracks from './components/SearchTracks.jsx';
@@ -10,6 +10,7 @@ import Album from './components/Album.jsx';
 import ArtistsList from './components/ArtistsList.jsx';
 import Artist from './components/Artist.jsx';
 import AddTrack from './components/AddTrack';
+import AddAlbum from './components/AddAlbum';
 import Player from './components/Player.jsx';
 import Login from './components/Login.jsx';
 import Profile from './components/Profile.jsx';
@@ -20,6 +21,7 @@ function App() {
 	const [currentTrackIndex, setCurrentTrackIndex] = useState(-1);
 	const [contextParams, setContextParams] = useState(null);
 	const [token, setToken] = useState(localStorage.getItem('token') || null);
+	const location = useLocation();
 
 	const handleLogin = (newToken) => {
 		localStorage.setItem('token', newToken);
@@ -79,7 +81,8 @@ function App() {
 				<Route path="/profile" element={token ? <Profile token={token} onLogout={handleLogout} /> : <Navigate to="/login" />} />
 				<Route path="*" element={<div>Not Found</div>} />
 			</Routes>
-			<AddTrack token={token} style={{ bottom: currentTrack ? '90px' : '30px' }} />
+			{location.pathname === '/tracks' && <AddTrack token={token} style={{ bottom: currentTrack ? '90px' : '30px' }} />}
+			{location.pathname === '/albums' && <AddAlbum token={token} style={{ bottom: currentTrack ? '90px' : '30px' }} />}
 			{currentTrack && (
 				<Player
 					token={token}

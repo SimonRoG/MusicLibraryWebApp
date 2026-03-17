@@ -27,11 +27,11 @@ export const createArtistData = async (name) => {
 	return await res.json();
 };
 
-export const createAlbumData = async (title, artist_id) => {
+export const createAlbumData = async (title, artist_id, release_year = null, cover_image = null) => {
 	const res = await fetchWithAuth('/api/albums', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({ title, artist_id })
+		body: JSON.stringify({ title, artist_id, release_year, cover_image })
 	});
 	return await res.json();
 };
