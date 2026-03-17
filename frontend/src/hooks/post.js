@@ -18,11 +18,11 @@ export const uploadFileData = async (file) => {
 	return await res.json();
 };
 
-export const createArtistData = async (name) => {
+export const createArtistData = async (name, description) => {
 	const res = await fetchWithAuth('/api/artists', {
 		method: 'POST',
 		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({ name })
+		body: JSON.stringify({ name, description })
 	});
 	return await res.json();
 };
