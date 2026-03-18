@@ -7,7 +7,9 @@ export default function AddTrack({ token, style }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [title, setTitle] = useState('');
 	const [artistName, setArtistName] = useState('');
+	const [artistDescription, setArtistDescription] = useState('');
 	const [albumTitle, setAlbumTitle] = useState('');
+	const [albumCover, setAlbumCover] = useState(null);
 	const [genreId, setGenreId] = useState('');
 	const [year, setYear] = useState('');
 	const [description, setDescription] = useState('');
@@ -21,6 +23,18 @@ export default function AddTrack({ token, style }) {
 	const genres = getGenres();
 
 	if (!token) return null;
+
+	const isArtistNew = artistName.trim() && !artists.some(a => a.name.toLowerCase() === artistName.trim().toLowerCase());
+	const isAlbumNew = albumTitle.trim() && !albums.some(a => a.title.toLowerCase() === albumTitle.trim().toLowerCase());
+
+	const handleAlbumChange = (e) => {
+		const val = e.target.value;
+		setAlbumTitle(val);
+		const existingAlbum = albums.find(a => a.title.toLowerCase() === val.toLowerCase());
+		if (existingAlbum && existingAlbum.release_year) {
+			setYear(existingAlbum.release_year.toString());
+		}
+	};
 
 	const toggleModal = () => {
 		setIsOpen(!isOpen);
@@ -45,7 +59,7 @@ export default function AddTrack({ token, style }) {
 			if (existingArtist) {
 				finalArtistId = existingArtist.id;
 			} else {
-				const artistData = await createArtistData(artistName.trim());
+				const artistData = await createArtistData(artistName.trim(), artistDescription.trim() || null);
 				finalArtistId = artistData.id;
 			}
 		}
@@ -56,7 +70,12 @@ export default function AddTrack({ token, style }) {
 			if (existingAlbum) {
 				finalAlbumId = existingAlbum.id;
 			} else {
-				const albumData = await createAlbumData(albumTitle.trim(), finalArtistId);
+				let coverFile = null;
+				if (albumCover) {
+					const coverData = await uploadFileData(albumCover);
+					coverFile = coverData.filename;
+				}
+				const albumData = await createAlbumData(albumTitle.trim(), finalArtistId, year ? parseInt(year) : null, coverFile);
 				finalAlbumId = albumData.id;
 			}
 		}
@@ -76,7 +95,9 @@ export default function AddTrack({ token, style }) {
 		setIsOpen(false);
 		setTitle('');
 		setArtistName('');
+		setArtistDescription('');
 		setAlbumTitle('');
+		setAlbumCover(null);
 		setGenreId('');
 		setYear('');
 		setDescription('');
@@ -122,12 +143,20 @@ export default function AddTrack({ token, style }) {
 								))}
 							</datalist>
 
+							{isArtistNew && (
+								<textarea
+									placeholder="Artist Description (Optional)"
+									value={artistDescription}
+									onChange={(e) => setArtistDescription(e.target.value)}
+								/>
+							)}
+
 							<input
 								list="albums-list"
 								type="text"
 								placeholder="Album *"
 								value={albumTitle}
-								onChange={(e) => setAlbumTitle(e.target.value)}
+								onChange={handleAlbumChange}
 								required
 							/>
 							<datalist id="albums-list">
@@ -139,6 +168,21 @@ export default function AddTrack({ token, style }) {
 									<option key={idx} value={title} />
 								))}
 							</datalist>
+
+							{isAlbumNew && (
+								<div className="album-extras">
+									<label>Album Cover Image:</label>
+									<input
+										type="file"
+										accept="image/*"
+										onChange={(e) => {
+											if (e.target.files && e.target.files.length > 0) {
+												setAlbumCover(e.target.files[0]);
+											}
+										}}
+									/>
+								</div>
+							)}
 
 							<select value={genreId} onChange={(e) => setGenreId(e.target.value)} required>
 								<option value="">Genre *</option>
