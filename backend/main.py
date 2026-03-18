@@ -316,6 +316,22 @@ def create_artist(artist: schemas.ArtistBase, db: Session = Depends(get_db)):
     return crud.create_artist(db, name=artist.name, description=artist.description)
 
 
+@app.patch("/api/artists/{artist_id}", response_model=schemas.Artist)
+def update_artist(
+    artist_id: int,
+    artist_update: dict = Body(...),
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
+):
+    if current_user.username != "admin":
+        raise HTTPException(status_code=403, detail="Not authorized")
+
+    artist = crud.get_artist(db, artist_id)
+    if not artist:
+        raise HTTPException(status_code=404, detail="Artist not found")
+    return crud.update_artist(db, artist=artist, **artist_update)
+
+
 # Genres
 
 

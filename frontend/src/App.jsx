@@ -82,7 +82,7 @@ function App() {
 				<Route path="/albums" element={<AlbumsList />} />
 				<Route path="/albums/:id" element={<Album onPlay={handlePlay} />} />
 				<Route path="/artists" element={<ArtistsList />} />
-				<Route path="/artists/:id" element={<Artist />} />
+				<Route path="/artists/:id" element={<Artist token={token} />} />
 				<Route path="/login" element={token ? <Navigate to="/profile" /> : <Login onLogin={handleLogin} />} />
 				<Route path="/profile" element={token ? <Profile token={token} onLogout={handleLogout} /> : <Navigate to="/login" />} />
 				<Route path="*" element={<div>Not Found</div>} />

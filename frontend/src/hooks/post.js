@@ -27,6 +27,15 @@ export const createArtistData = async (name, description) => {
 	return await res.json();
 };
 
+export const updateArtistData = async (id, payload) => {
+	const res = await fetchWithAuth(`/api/artists/${id}`, {
+		method: 'PATCH',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(payload)
+	});
+	return await res.json();
+};
+
 export const createAlbumData = async (title, artist_id, release_year = null, cover_image = null) => {
 	const res = await fetchWithAuth('/api/albums', {
 		method: 'POST',

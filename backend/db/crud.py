@@ -74,6 +74,18 @@ def create_artist(
     return artist
 
 
+def update_artist(db: Session, *, artist: models.Artist, **fields) -> models.Artist:
+    allowed = {"name", "description"}
+    for k, v in fields.items():
+        if k in allowed:
+            setattr(artist, k, v)
+
+    db.add(artist)
+    db.commit()
+    db.refresh(artist)
+    return artist
+
+
 # Genre
 
 
