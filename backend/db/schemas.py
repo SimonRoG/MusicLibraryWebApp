@@ -111,3 +111,13 @@ class PlaylistTrack(BaseModel):
     position: Optional[int] = None
 
     model_config = ConfigDict(from_attributes=True)
+
+class Saved(BaseModel):
+    id: int
+    user_id: int
+    track_id: Optional[int] = None
+    album_id: Optional[int] = None
+    artist_id: Optional[int] = None
+    playlist_id: Optional[int] = None
+
+    model_config = ConfigDict(from_attributes=True)

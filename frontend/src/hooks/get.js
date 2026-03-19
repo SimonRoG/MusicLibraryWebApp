@@ -218,3 +218,16 @@ export function getAlbums({ artist_id } = {}) {
 	}, [artist_id]);
 	return albums;
 }
+
+export function getSavedItems() {
+	const [savedItems, setSavedItems] = useState([]);
+	useEffect(() => {
+		const fetchSavedItems = async () => {
+			const res = await fetchWithAuth('/api/saved');
+			const data = await res.json();
+			setSavedItems(data);
+		};
+		fetchSavedItems();
+	}, []);
+	return savedItems;
+}

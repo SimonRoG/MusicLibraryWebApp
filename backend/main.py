@@ -392,3 +392,45 @@ async def upload_file(file: UploadFile = File(...)):
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
     return {"filename": file_path}
+
+
+# Saved
+
+
+@app.get("/api/saved", response_model=List[schemas.Saved])
+def get_saved(
+    current_user: models.User = Depends(get_current_user), db: Session = Depends(get_db)
+):
+    return crud.get_saved(db, user_id=current_user.id)
+
+
+@app.post("/api/saved")
+def add_to_saved(
+    item: schemas.Saved,
+    current_user: models.User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    return crud.add_to_saved(
+        db,
+        user_id=current_user.id,
+        track_id=item.track_id,
+        album_id=item.album_id,
+        artist_id=item.artist_id,
+        playlist_id=item.playlist_id,
+    )
+
+
+@app.delete("/api/saved")
+def remove_from_saved(
+    item: schemas.Saved,
+    current_user: models.User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    return crud.remove_from_saved(
+        db,
+        user_id=current_user.id,
+        track_id=item.track_id,
+        album_id=item.album_id,
+        artist_id=item.artist_id,
+        playlist_id=item.playlist_id,
+    )

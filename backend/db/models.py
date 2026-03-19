@@ -108,3 +108,21 @@ class PlaylistTrack(Base):
 
     playlist = relationship("Playlist", back_populates="tracks")
     track = relationship("Track", back_populates="playlists")
+
+
+class Saved(Base):
+    __tablename__ = "saved"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="cascade"))
+    track_id = Column(Integer, ForeignKey("tracks.id", ondelete="cascade"))
+    album_id = Column(Integer, ForeignKey("albums.id", ondelete="cascade"))
+    artist_id = Column(Integer, ForeignKey("artists.id", ondelete="cascade"))
+    playlist_id = Column(Integer, ForeignKey("playlists.id", ondelete="cascade"))
+
+    user = relationship("User")
+    track = relationship("Track")
+    album = relationship("Album")
+    artist = relationship("Artist")
+    playlist = relationship("Playlist")
+    

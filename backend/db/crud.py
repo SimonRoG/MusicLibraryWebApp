@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import Optional, Sequence
+from typing import Optional, Sequence, List
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 
@@ -389,3 +389,62 @@ def remove_track_from_playlist(db: Session, *, playlist_id: int, track_id: int) 
     db.delete(link)
     db.commit()
     return True
+
+
+# Saved
+
+
+def get_saved(db: Session, user_id: int) -> List[models.Saved]:
+    return db.query(models.Saved).filter(models.Saved.user_id == user_id).all()
+
+
+def add_to_saved(
+    db: Session,
+    user_id: int,
+    track_id: Optional[int],
+    album_id: Optional[int],
+    artist_id: Optional[int],
+    playlist_id: Optional[int],
+):
+    if not any([track_id, album_id, artist_id, playlist_id]):
+        raise ValueError("Cannot add empty item")
+
+    saved_item = models.Saved(
+        user_id=user_id,
+        track_id=track_id,
+        album_id=album_id,
+        artist_id=artist_id,
+        playlist_id=playlist_id,
+    )
+    db.add(saved_item)
+    db.commit()
+    return saved_item
+
+
+def remove_from_saved(
+    db: Session,
+    user_id: int,
+    track_id: Optional[int],
+    album_id: Optional[int],
+    artist_id: Optional[int],
+    playlist_id: Optional[int],
+):
+    if not any([track_id, album_id, artist_id, playlist_id]):
+        raise ValueError("Cannot remove empty item")
+
+    db_remove = (
+        db.query(models.Saved)
+        .filter(
+            models.Saved.user_id == user_id,
+            models.Saved.track_id == track_id,
+            models.Saved.album_id == album_id,
+            models.Saved.artist_id == artist_id,
+            models.Saved.playlist_id == playlist_id,
+        )
+        .first()
+    )
+    if not db_remove:
+        raise ValueError("Item not found")
+    db.delete(db_remove)
+    db.commit()
+    return db_remove
