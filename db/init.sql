@@ -51,3 +51,18 @@ create table if not exists playlist_tracks(
 	position int,
 	primary key (playlist_id, track_id)
 );
+
+create table if not exists saved(
+	id serial primary key,
+	user_id int not null references users(id) on delete cascade,
+	track_id int references tracks(id) on delete cascade,
+	album_id int references albums(id) on delete cascade,
+	artist_id int references artists(id) on delete cascade,
+	playlist_id int references playlists(id) on delete cascade,
+	check (
+		(track_id is not null)::integer +
+		(album_id is not null)::integer +
+		(artist_id is not null)::integer +
+		(playlist_id is not null)::integer = 1
+	)
+);
