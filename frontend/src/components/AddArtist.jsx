@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './styles/AddTrack.css'; // Using the same styling
-import { createArtistData } from '../hooks/post';
+import { createArtistData } from '../hooks/set';
 
 export default function AddArtist({ token, style }) {
 	const [isOpen, setIsOpen] = useState(false);

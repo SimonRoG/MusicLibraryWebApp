@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './styles/AddTrack.css';
 import { getArtists } from '../hooks/get';
-import { uploadFileData, createArtistData, createAlbumData } from '../hooks/post';
+import { uploadFileData, createArtistData, createAlbumData } from '../hooks/set';
 
 export default function AddAlbum({ token, style }) {
 	const [isOpen, setIsOpen] = useState(false);

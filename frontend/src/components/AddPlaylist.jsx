@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import './styles/AddTrack.css';
 import { getUser } from '../hooks/get';
-import { createPlaylistData } from '../hooks/post';
+import { createPlaylistData } from '../hooks/set';
 
 export default function AddPlaylist({ token, style }) {
 	const [isOpen, setIsOpen] = useState(false);
