@@ -225,7 +225,7 @@ export function getSavedItems() {
 		const fetchSavedItems = async () => {
 			const res = await fetchWithAuth('/api/saved');
 			const data = await res.json();
-			setSavedItems(data);
+			setSavedItems(Array.isArray(data) ? data : []);
 		};
 		fetchSavedItems();
 	}, []);

@@ -50,3 +50,4 @@ function PlaylistsList() {
 }
 
 export default PlaylistsList;
+export { PlaylistListItem };

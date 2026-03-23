@@ -12,7 +12,10 @@ const Navbar = ({ token }) => {
 				<li><Link to="/albums">Albums</Link></li>
 				<li><Link to="/artists">Artists</Link></li>
 				{token ? (
-					<li><Link to="/profile">Profile</Link></li>
+					<>
+						<li><Link to="/saved">Saved</Link></li>
+						<li><Link to="/profile">Profile</Link></li>
+					</>
 				) : (
 					<li><Link to="/login">Login</Link></li>
 				)}

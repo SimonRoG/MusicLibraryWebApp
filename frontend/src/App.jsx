@@ -17,6 +17,7 @@ import AddTrackToPlaylist from './components/AddTrackToPlaylist';
 import Player from './components/Player.jsx';
 import Login from './components/Login.jsx';
 import Profile from './components/Profile.jsx';
+import Saved from './components/Saved.jsx';
 import { fetchTracksData } from './hooks/get.js';
 
 function App() {
@@ -83,6 +84,7 @@ function App() {
 				<Route path="/albums/:id" element={<Album onPlay={handlePlay} />} />
 				<Route path="/artists" element={<ArtistsList />} />
 				<Route path="/artists/:id" element={<Artist token={token} />} />
+				<Route path="/saved" element={token ? <Saved onPlay={handlePlay} /> : <Navigate to="/login" />} />
 				<Route path="/login" element={token ? <Navigate to="/profile" /> : <Login onLogin={handleLogin} />} />
 				<Route path="/profile" element={token ? <Profile token={token} onLogout={handleLogout} /> : <Navigate to="/login" />} />
 				<Route path="*" element={<div>Not Found</div>} />

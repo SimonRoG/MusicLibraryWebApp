@@ -1,0 +1,145 @@
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { getSavedItems, getTracks, getPlaylists, getAlbums, getArtists, getUsers } from '../hooks/get.js';
+import './styles/Lists.css';
+import { PlaylistListItem } from './PlaylistsList.jsx';
+
+function Saved({ onPlay }) {
+	const savedItems = getSavedItems() || [];
+	const albums = getAlbums();
+	const artists = getArtists();
+	const users = getUsers();
+	const tracks = getTracks({ limit: 1000 }) || [];
+	const playlists = getPlaylists() || [];
+	const navigate = useNavigate();
+
+	const [filter, setFilter] = useState('all');
+
+	const savedItemsArray = Array.isArray(savedItems) ? savedItems : [];
+	const savedTracks = savedItemsArray.filter(item => item.track_id);
+	const savedAlbums = savedItemsArray.filter(item => item.album_id);
+	const savedArtists = savedItemsArray.filter(item => item.artist_id);
+	const savedPlaylists = savedItemsArray.filter(item => item.playlist_id);
+
+	const playableTracks = savedTracks.map(item => tracks.find(t => t.id === item.track_id)).filter(Boolean);
+
+	return (
+		<div style={{ padding: '20px' }}>
+			<h2>Saved Library</h2>
+
+			<div className="filters" style={{ marginBottom: '20px' }}>
+				<select value={filter} onChange={(e) => setFilter(e.target.value)}>
+					<option value="all">All</option>
+					<option value="tracks">Tracks</option>
+					<option value="albums">Albums</option>
+					<option value="artists">Artists</option>
+					<option value="playlists">Playlists</option>
+				</select>
+			</div>
+
+			{(filter === 'all' || filter === 'tracks') && savedTracks.length > 0 && (
+				<>
+					<h3>Tracks</h3>
+					<ul className="list">
+						{savedTracks.map(item => {
+							const track = tracks.find(t => t.id === item.track_id);
+							if (!track) return null;
+
+							const album = albums.find(a => a.id === track.album_id);
+
+							return (
+								<li key={item.id} onClick={() => onPlay && onPlay(track, playableTracks)} style={{ cursor: 'pointer' }}>
+									<div className="info">
+										{album && (
+											<img
+												src={`/${album.cover_image}`}
+												alt={album.title}
+											/>
+										)}
+										<div className="details">
+											<span className="title">{track.title}</span>
+											<span className="artist" onClick={(e) => e.stopPropagation()}>
+												<Link to={`/artists/${track.artist_id}`}>
+													{artists.find(artist => artist.id === track.artist_id)?.name}
+												</Link>
+											</span>
+										</div>
+									</div>
+								</li>
+							);
+						})}
+					</ul>
+				</>
+			)}
+
+			{(filter === 'all' || filter === 'albums') && savedAlbums.length > 0 && (
+				<>
+					<h3>Albums</h3>
+					<ul className="list">
+						{savedAlbums.map(item => {
+							const album = albums.find(a => a.id === item.album_id);
+							if (!album) return null;
+
+							return (
+								<li onClick={() => navigate(`/albums/${album.id}`)} style={{ cursor: 'pointer' }}>
+									<div className="info">
+										<img src={`/${album.cover_image}`} alt={album.title} />
+										<div className="details">
+											<span className="title">{album.title}</span>
+											<span className="artist" onClick={(e) => e.stopPropagation()}>
+												<Link to={`/artists/${album.artist_id}`}>
+													{artists.find(artist => artist.id === album.artist_id)?.name}
+												</Link>
+											</span>
+										</div>
+									</div>
+								</li>
+							);
+						})}
+					</ul>
+				</>
+			)}
+
+			{(filter === 'all' || filter === 'artists') && savedArtists.length > 0 && (
+				<>
+					<h3>Artists</h3>
+					<ul className="list">
+						{savedArtists.map(item => {
+							const artist = artists.find(a => a.id === item.artist_id);
+							if (!artist) return null;
+
+							return (
+								<li onClick={() => navigate(`/artists/${artist.id}`)} style={{ cursor: 'pointer' }}>
+									<div className="info">
+										<img src="" alt="" />
+										<div className="details">
+											<span className="title">{artist.name}</span>
+										</div>
+									</div>
+								</li>
+							);
+						})}
+					</ul>
+				</>
+			)}
+
+			{(filter === 'all' || filter === 'playlists') && savedPlaylists.length > 0 && (
+				<>
+					<h3>Playlists</h3>
+					<ul className="list">
+						{savedPlaylists.map(item => {
+							const playlist = playlists.find(p => p.id === item.playlist_id);
+							if (!playlist) return null;
+
+							return <PlaylistListItem key={playlist.id} playlist={playlist} albums={albums} users={users} />;
+						})}
+					</ul>
+				</>
+			)}
+
+			{savedItems.length === 0 && <p>You haven't saved anything yet.</p>}
+		</div>
+	);
+}
+
+export default Saved;

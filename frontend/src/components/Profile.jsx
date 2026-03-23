@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getSavedItems } from '../hooks/get';
 import './styles/Profile.css';
 
 const Profile = ({ token, onLogout }) => {
 	const [user, setUser] = useState(null);
 	const [error, setError] = useState('');
 	const navigate = useNavigate();
-
-	const savedItems = getSavedItems();
 
 	useEffect(() => {
 		const fetchUser = async () => {
@@ -51,24 +48,15 @@ const Profile = ({ token, onLogout }) => {
 	};
 
 	return (
-		<>
-			<div className="profile-container">
-				<h2>User Profile</h2>
-				<div className="details">
-					<p><strong>Username:</strong> {user.username}</p>
-					<p><strong>Email:</strong> {user.email}</p>
-					<p><strong>Joined:</strong> {new Date(user.created_at).toLocaleDateString()}</p>
-				</div>
-				<button onClick={handleLogoutClick} className="logout-btn">Logout</button>
+		<div className="profile-container">
+			<h2>User Profile</h2>
+			<div className="details">
+				<p><strong>Username:</strong> {user.username}</p>
+				<p><strong>Email:</strong> {user.email}</p>
+				<p><strong>Joined:</strong> {new Date(user.created_at).toLocaleDateString()}</p>
 			</div>
-			<div>
-				<ul>
-					{savedItems.map(item => (
-						<li key={item.id}>{item.id}</li>
-					))}
-				</ul>
-			</div>
-		</>
+			<button onClick={handleLogoutClick} className="logout-btn">Logout</button>
+		</div>
 	);
 };
 
