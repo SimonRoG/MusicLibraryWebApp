@@ -30,7 +30,7 @@ export default function EditArtist({ token, artist, onClose }) {
 	};
 
 	return (
-		<div className="add" style={{ zIndex: 1000}}>
+		<div className="add" style={{ zIndex: 1000 }}>
 			<div className="add-modal-overlay" onClick={onClose}>
 				<div className="add-modal" onClick={(e) => e.stopPropagation()}>
 					<h2>Edit Artist</h2>
