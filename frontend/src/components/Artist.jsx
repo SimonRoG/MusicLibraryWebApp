@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { getArtistById, getAlbums, getUser } from '../hooks/get.js';
 import EditArtist from './EditArtist.jsx';
+import AlbumCard from './AlbumCard.jsx';
 import './styles/Lists.css';
 
 function Artist({ token }) {
@@ -9,7 +10,6 @@ function Artist({ token }) {
 	const albums = getAlbums({ artist_id: id });
 	const artist = getArtistById(id);
 	const user = getUser(token);
-	const navigate = useNavigate();
 
 	const [showEdit, setShowEdit] = useState(false);
 
@@ -26,18 +26,11 @@ function Artist({ token }) {
 			</div>
 			<ul className="list">
 				{albums.map(album => (
-					<li key={album.id} onClick={() => navigate(`/albums/${album.id}`)} style={{ cursor: 'pointer' }}>
-						<div className="info">
-							<img
-								src={`/${album.cover_image}`}
-								alt={album.title}
-							/>
-							<div className="details">
-								<span className="title">{album.title}</span>
-								<span className="artist">{album.release_year}</span>
-							</div>
-						</div>
-					</li>
+					<AlbumCard
+						key={album.id}
+						album={album}
+						artist={artist}
+					/>
 				))}
 			</ul>
 			{showEdit && (

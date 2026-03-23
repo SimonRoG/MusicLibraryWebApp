@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom';
 import { getTracks, getArtists, getAlbums } from '../hooks/get.js';
+import TrackCard from './TrackCard.jsx';
 import './styles/Lists.css';
 
 function TracksList({ q, genre_id, artist_id, year, initialLimit = 10, onPlay } = {}) {
@@ -24,22 +24,13 @@ function TracksList({ q, genre_id, artist_id, year, initialLimit = 10, onPlay } 
 		<>
 			<ul className="list">
 				{tracks.map(track => (
-					<li key={track.id} onClick={() => onPlay && onPlay(track, tracks, { q, genre_id, artist_id, year })} style={{ cursor: 'pointer' }}>
-						<div className="info">
-							<img
-								src={`/${albums.find(album => album.id === track.album_id)?.cover_image}`}
-								alt={`/${albums.find(album => album.id === track.album_id)?.title}`}
-							/>
-							<div className="details">
-								<span className="title">{track.title}</span>
-								<span className="artist" onClick={(e) => e.stopPropagation()}>
-									<Link to={`/artists/${track.artist_id}`}>
-										{artists.find(artist => artist.id === track.artist_id)?.name}
-									</Link>
-								</span>
-							</div>
-						</div>
-					</li>
+					<TrackCard
+						key={track.id}
+						track={track}
+						album={albums.find(album => album.id === track.album_id)}
+						artist={artists.find(artist => artist.id === track.artist_id)}
+						onClick={() => onPlay && onPlay(track, tracks, { q, genre_id, artist_id, year })}
+					/>
 				))}
 			</ul>
 			<div className="pages">

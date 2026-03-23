@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import { getSavedItems, getTracks, getPlaylists, getAlbums, getArtists, getUsers } from '../hooks/get.js';
 import './styles/Lists.css';
-import { PlaylistListItem } from './PlaylistsList.jsx';
+import PlaylistCard from './PlaylistCard.jsx';
+import TrackCard from './TrackCard.jsx';
+import AlbumCard from './AlbumCard.jsx';
+import ArtistCard from './ArtistCard.jsx';
 
 function Saved({ onPlay }) {
 	const savedItems = getSavedItems() || [];
@@ -11,7 +13,6 @@ function Saved({ onPlay }) {
 	const users = getUsers();
 	const tracks = getTracks({ limit: 1000 }) || [];
 	const playlists = getPlaylists() || [];
-	const navigate = useNavigate();
 
 	const [filter, setFilter] = useState('all');
 
@@ -48,24 +49,13 @@ function Saved({ onPlay }) {
 							const album = albums.find(a => a.id === track.album_id);
 
 							return (
-								<li key={item.id} onClick={() => onPlay && onPlay(track, playableTracks)} style={{ cursor: 'pointer' }}>
-									<div className="info">
-										{album && (
-											<img
-												src={`/${album.cover_image}`}
-												alt={album.title}
-											/>
-										)}
-										<div className="details">
-											<span className="title">{track.title}</span>
-											<span className="artist" onClick={(e) => e.stopPropagation()}>
-												<Link to={`/artists/${track.artist_id}`}>
-													{artists.find(artist => artist.id === track.artist_id)?.name}
-												</Link>
-											</span>
-										</div>
-									</div>
-								</li>
+								<TrackCard
+									key={item.id}
+									track={track}
+									album={album}
+									artist={artists.find(artist => artist.id === track.artist_id)}
+									onClick={() => onPlay && onPlay(track, playableTracks)}
+								/>
 							);
 						})}
 					</ul>
@@ -81,19 +71,11 @@ function Saved({ onPlay }) {
 							if (!album) return null;
 
 							return (
-								<li onClick={() => navigate(`/albums/${album.id}`)} style={{ cursor: 'pointer' }}>
-									<div className="info">
-										<img src={`/${album.cover_image}`} alt={album.title} />
-										<div className="details">
-											<span className="title">{album.title}</span>
-											<span className="artist" onClick={(e) => e.stopPropagation()}>
-												<Link to={`/artists/${album.artist_id}`}>
-													{artists.find(artist => artist.id === album.artist_id)?.name}
-												</Link>
-											</span>
-										</div>
-									</div>
-								</li>
+								<AlbumCard
+									key={item.id}
+									album={album}
+									artist={artists.find(artist => artist.id === album.artist_id)}
+								/>
 							);
 						})}
 					</ul>
@@ -109,14 +91,7 @@ function Saved({ onPlay }) {
 							if (!artist) return null;
 
 							return (
-								<li onClick={() => navigate(`/artists/${artist.id}`)} style={{ cursor: 'pointer' }}>
-									<div className="info">
-										<img src="" alt="" />
-										<div className="details">
-											<span className="title">{artist.name}</span>
-										</div>
-									</div>
-								</li>
+								<ArtistCard key={item.id} artist={artist} />
 							);
 						})}
 					</ul>
@@ -131,7 +106,7 @@ function Saved({ onPlay }) {
 							const playlist = playlists.find(p => p.id === item.playlist_id);
 							if (!playlist) return null;
 
-							return <PlaylistListItem key={playlist.id} playlist={playlist} albums={albums} users={users} />;
+							return <PlaylistCard key={playlist.id} playlist={playlist} albums={albums} users={users} />;
 						})}
 					</ul>
 				</>

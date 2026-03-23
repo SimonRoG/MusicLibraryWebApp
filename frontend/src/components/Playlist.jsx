@@ -1,6 +1,7 @@
 import React from 'react'
 import { useParams, Link } from 'react-router-dom';
 import { getUsers, getPlaylistById, getPlaylistTracks, getArtists, getAlbums } from '../hooks/get.js';
+import TrackCard from './TrackCard.jsx';
 import './styles/Lists.css';
 
 function Playlist({ onPlay }) {
@@ -32,26 +33,13 @@ function Playlist({ onPlay }) {
 					const artist = artists.find(a => a.id === track.artist_id);
 
 					return (
-						<li key={track.id} onClick={() => onPlay && onPlay(track, tracks)} style={{ cursor: 'pointer' }}>
-							<div className="info">
-								{album && (
-									<img
-										src={`/${album.cover_image}`}
-										alt={album.title}
-									/>
-								)}
-								<div className="details">
-									<span className="title">{track.title}</span>
-									<span className="artist" onClick={(e) => e.stopPropagation()}>
-										{artist && (
-											<Link to={`/artists/${track.artist_id}`}>
-												{artist.name}
-											</Link>
-										)}
-									</span>
-								</div>
-							</div>
-						</li>
+						<TrackCard
+							key={track.id}
+							track={track}
+							album={album}
+							artist={artist}
+							onClick={() => onPlay && onPlay(track, tracks)}
+						/>
 					)
 				})}
 			</ul>
