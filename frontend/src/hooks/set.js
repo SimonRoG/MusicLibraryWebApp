@@ -24,7 +24,9 @@ export const createArtistData = async (name, description) => {
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({ name, description })
 	});
-	return await res.json();
+	const data = await res.json();
+	if (data && data.id) await toggleSave({ artist_id: data.id }, false);
+	return data;
 };
 
 export const updateArtistData = async (id, payload) => {
@@ -42,7 +44,9 @@ export const createAlbumData = async (title, artist_id, release_year = null, cov
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify({ title, artist_id, release_year, cover_image })
 	});
-	return await res.json();
+	const data = await res.json();
+	if (data && data.id) await toggleSave({ album_id: data.id }, false);
+	return data;
 };
 
 export const createTrackData = async (payload) => {
@@ -51,7 +55,9 @@ export const createTrackData = async (payload) => {
 		headers: { 'Content-Type': 'application/json' },
 		body: JSON.stringify(payload)
 	});
-	return await res.json();
+	const data = await res.json();
+	if (data && data.id) await toggleSave({ track_id: data.id }, false);
+	return data;
 };
 
 export const updateTrackData = async (id, payload) => {
