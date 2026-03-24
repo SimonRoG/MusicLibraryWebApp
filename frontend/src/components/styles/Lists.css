@@ -9,6 +9,12 @@ ul.list {
 	}
 
 	li {
+		cursor: pointer;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		width: 100%;
+
 		.info {
 			display: flex;
 			align-items: center;
@@ -80,4 +86,28 @@ ul.list {
 			color: var(--bg);
 		}
 	}
+}
+
+.save-btn {
+	background: none;
+	border: none;
+	cursor: pointer;
+	font-size: 1.5em;
+	color: var(--text);
+	padding: 5px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+
+	&:hover {
+		transform: scale(1.2);
+	}
+
+	&.saved {
+		color: #ff0000;
+	}
+}
+
+ul.list li:hover .save-btn:not(.saved) {
+	color: var(--bg);
 }

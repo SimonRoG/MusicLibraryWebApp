@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { getArtistById, getAlbums, getUser } from '../hooks/get.js';
 import EditArtist from './EditArtist.jsx';
 import AlbumCard from './AlbumCard.jsx';
+import SaveButton from './SaveButton.jsx';
 import './styles/Lists.css';
 
 function Artist({ token }) {
@@ -18,7 +19,10 @@ function Artist({ token }) {
 	return (
 		<>
 			<div>
-				<h2>{artist.name}</h2>
+				<div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+					<h2>{artist.name}</h2>
+					<SaveButton itemType="artist" itemId={artist.id} />
+				</div>
 				{user && user.username === 'admin' && (
 					<button style={{ marginBottom: "10px", padding: '5px 10px', borderRadius: '5px', border: '1px solid #ccc', backgroundColor: '#333', color: '#fff', cursor: 'pointer' }} onClick={() => setShowEdit(true)}>Edit</button>
 				)}

@@ -2,6 +2,7 @@ import React from 'react'
 import { useParams, Link } from 'react-router-dom';
 import { getUsers, getPlaylistById, getPlaylistTracks, getArtists, getAlbums } from '../hooks/get.js';
 import TrackCard from './TrackCard.jsx';
+import SaveButton from './SaveButton.jsx';
 import './styles/Lists.css';
 
 function Playlist({ onPlay }) {
@@ -22,10 +23,11 @@ function Playlist({ onPlay }) {
 
 	return (
 		<>
-			<div>
+			<div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
 				<h2>{playlist.name}</h2>
-				<p>Owner: {owner}</p>
+				<SaveButton itemType="playlist" itemId={playlist.id} />
 			</div>
+			<p>Owner: {owner}</p>
 			{tracks.detail && <div><h2>{tracks.detail}</h2></div>}
 			<ul className="list">
 				{Array.isArray(tracks) && tracks.map(track => {

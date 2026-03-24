@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import SaveButton from './SaveButton.jsx';
 
 function AlbumCard({ album, artist }) {
 	const navigate = useNavigate();
 
 	return (
-		<li onClick={() => navigate(`/albums/${album.id}`)} style={{ cursor: 'pointer' }}>
+		<li onClick={() => navigate(`/albums/${album.id}`)}>
 			<div className="info">
 				<img
 					src={`/${album.cover_image}`}
@@ -19,6 +20,9 @@ function AlbumCard({ album, artist }) {
 						</Link>
 					</span>
 				</div>
+			</div>
+			<div className="actions" onClick={(e) => e.stopPropagation()}>
+				<SaveButton itemType="album" itemId={album.id} />
 			</div>
 		</li>
 	);

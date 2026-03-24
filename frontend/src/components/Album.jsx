@@ -2,6 +2,7 @@ import React from 'react'
 import { useParams, Link } from 'react-router-dom';
 import { getTracks, getAlbumById, getArtists } from '../hooks/get.js';
 import TrackCard from './TrackCard.jsx';
+import SaveButton from './SaveButton.jsx';
 import './styles/Lists.css';
 
 function Album({ onPlay }) {
@@ -25,7 +26,10 @@ function Album({ onPlay }) {
 					width={200}
 				/>
 				<div>
-					<h2>{album.title}</h2>
+					<div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+						<h2>{album.title}</h2>
+						<SaveButton itemType="album" itemId={album.id} />
+					</div>
 					<p>
 						{artist && (
 							<Link to={`/artists/${artist.id}`}>{artist.name}</Link>

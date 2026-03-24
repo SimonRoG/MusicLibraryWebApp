@@ -80,3 +80,17 @@ export const addTrackToPlaylistData = async (playlistId, trackId) => {
 	});
 	return await res.json();
 };
+
+export const toggleSave = async (payload, isSaved) => {
+	try {
+		const url = '/api/saved';
+		const method = isSaved ? 'DELETE' : 'POST';
+		await fetchWithAuth(url, {
+			method,
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify(payload)
+		});
+	} catch (e) {
+		console.error("Error toggling save:", e);
+	}
+};

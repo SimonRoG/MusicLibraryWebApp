@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { getSavedItems, getTracks, getPlaylists, getAlbums, getArtists, getUsers } from '../hooks/get.js';
+import { getTracks, getPlaylists, getAlbums, getArtists, getUsers, getSavedItems } from '../hooks/get.js';
 import './styles/Lists.css';
 import PlaylistCard from './PlaylistCard.jsx';
 import TrackCard from './TrackCard.jsx';
