@@ -14,11 +14,11 @@ ul.list {
 		justify-content: space-between;
 		align-items: center;
 		width: 100%;
+		margin: 10px 0;
 
 		.info {
 			display: flex;
 			align-items: center;
-			margin: 10px 0;
 			padding: 2px;
 
 			img {
