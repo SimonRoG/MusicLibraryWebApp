@@ -1,22 +1,22 @@
 import React, { useState } from 'react'
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import './App.css'
+import '../styles/App.css'
 import Navbar from './components/NavBar.jsx';
-import SearchTracks from './components/SearchTracks.jsx';
-import PlaylistsList from './components/PlaylistsList.jsx';
-import Playlist from './components/Playlist.jsx';
-import AlbumsList from './components/AlbumsList.jsx';
-import Album from './components/Album.jsx';
-import ArtistsList from './components/ArtistsList.jsx';
-import Artist from './components/Artist.jsx';
-import AddTrack from './components/AddTrack';
-import AddAlbum from './components/AddAlbum';
-import AddArtist from './components/AddArtist';
-import AddPlaylist from './components/AddPlaylist';
-import AddTrackToPlaylist from './components/AddTrackToPlaylist';
+import SearchTracks from './components/tracks/SearchTracks.jsx';
+import PlaylistsList from './components/playlists/PlaylistsList.jsx';
+import Playlist from './components/playlists/Playlist.jsx';
+import AlbumsList from './components/albums/AlbumsList.jsx';
+import Album from './components/albums/Album.jsx';
+import ArtistsList from './components/artists/ArtistsList.jsx';
+import Artist from './components/artists/Artist.jsx';
+import AddTrack from './components/tracks/AddTrack.jsx';
+import AddAlbum from './components/albums/AddAlbum.jsx';
+import AddArtist from './components/artists/AddArtist.jsx';
+import AddPlaylist from './components/playlists/AddPlaylist.jsx';
+import AddTrackToPlaylist from './components/playlists/AddTrackToPlaylist.jsx';
 import Player from './components/Player.jsx';
-import Login from './components/Login.jsx';
-import Profile from './components/Profile.jsx';
+import Login from './components/auth/Login.jsx';
+import Profile from './components/auth/Profile.jsx';
 import Saved from './components/Saved.jsx';
 import { fetchTracksData } from './hooks/get.js';
 

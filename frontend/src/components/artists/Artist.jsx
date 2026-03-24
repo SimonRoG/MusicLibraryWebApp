@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom';
-import { getArtistById, getAlbums, getUser } from '../hooks/get.js';
+import { getArtistById, getAlbums, getUser } from '../../hooks/get.js';
 import EditArtist from './EditArtist.jsx';
-import AlbumCard from './AlbumCard.jsx';
-import SaveButton from './SaveButton.jsx';
-import './styles/Lists.css';
+import AlbumCard from '../albums/AlbumCard.jsx';
+import SaveButton from '../SaveButton.jsx';
+import '../../styles/Lists.css';
 
 function Artist({ token }) {
 	const { id } = useParams();

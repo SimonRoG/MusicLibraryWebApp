@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import './styles/AddTrack.css';
-import { getUser, getArtists, getAlbums, getGenres } from '../hooks/get';
-import { uploadFileData, createArtistData, createAlbumData, createTrackData } from '../hooks/set';
+import '../../styles/AddTrack.css';
+import { getUser, getArtists, getAlbums, getGenres } from '../../hooks/get';
+import { uploadFileData, createArtistData, createAlbumData, createTrackData } from '../../hooks/set';
 
 export default function AddTrack({ token, style }) {
 	const [isOpen, setIsOpen] = useState(false);

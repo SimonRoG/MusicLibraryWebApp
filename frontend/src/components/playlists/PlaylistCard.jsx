@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getFirstPlaylistTrack } from '../hooks/get.js';
-import SaveButton from './SaveButton.jsx';
+import { getFirstPlaylistTrack } from '../../hooks/get.js';
+import SaveButton from '../SaveButton.jsx';
 
 function PlaylistCard({ playlist, albums, users }) {
 	const firstTrack = getFirstPlaylistTrack(playlist.id);

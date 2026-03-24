@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import SaveButton from './SaveButton.jsx';
+import SaveButton from '../SaveButton.jsx';
 
 function AlbumCard({ album, artist }) {
 	const navigate = useNavigate();

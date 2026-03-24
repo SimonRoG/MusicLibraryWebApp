@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { getTracks, getArtists, getAlbums } from '../hooks/get.js';
+import { getTracks, getArtists, getAlbums } from '../../hooks/get.js';
 import TrackCard from './TrackCard.jsx';
-import './styles/Lists.css';
+import '../../styles/Lists.css';
 
 function TracksList({ q, genre_id, artist_id, year, initialLimit = 10, onPlay } = {}) {
 	const [page, setPage] = useState(1);

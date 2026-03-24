@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import './styles/AddTrack.css';
-import { updateArtistData } from '../hooks/set';
+import '../../styles/AddTrack.css';
+import { updateArtistData } from '../../hooks/set';
 
 export default function EditArtist({ token, artist, onClose }) {
 	const [name, setName] = useState(artist.name || '');

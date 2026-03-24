@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import SaveButton from './SaveButton.jsx';
+import SaveButton from '../SaveButton.jsx';
 
 function ArtistCard({ artist }) {
 	const navigate = useNavigate();

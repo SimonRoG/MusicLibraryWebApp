@@ -1,7 +1,7 @@
 import React from 'react'
-import { getArtists, getAlbums } from '../hooks/get.js';
+import { getArtists, getAlbums } from '../../hooks/get.js';
 import AlbumCard from './AlbumCard.jsx';
-import './styles/Lists.css';
+import '../../styles/Lists.css';
 
 function AlbumsList() {
 	const artists = getArtists();

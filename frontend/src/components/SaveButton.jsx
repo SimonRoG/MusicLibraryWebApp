@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { getSavedItems } from '../hooks/get.js';
 import { toggleSave } from '../hooks/set.js';
-import './styles/Lists.css';
+import '../styles/Lists.css';
 
 function SaveButton({ itemType, itemId }) {
 	const savedItems = getSavedItems();

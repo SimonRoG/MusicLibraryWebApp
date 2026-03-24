@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import './styles/AddTrack.css'; // Using the same styling
-import { createArtistData } from '../hooks/set';
+import '../../styles/AddTrack.css';
+import { getUser } from '../../hooks/get';
+import { createPlaylistData } from '../../hooks/set';
 
-export default function AddArtist({ token, style }) {
+export default function AddPlaylist({ token, style }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [name, setName] = useState('');
-	const [description, setDescription] = useState('');
-
 	const [loading, setLoading] = useState(false);
+
+	const user = getUser(token);
 
 	if (!token) return null;
 
@@ -19,17 +20,14 @@ export default function AddArtist({ token, style }) {
 		e.preventDefault();
 		setLoading(true);
 
-		try {
-			await createArtistData(name.trim(), description.trim() || undefined);
-			setIsOpen(false);
-			setName('');
-			setDescription('');
-			window.location.reload();
-		} catch (error) {
-			console.error("Error creating artist", error);
-		} finally {
-			setLoading(false);
-		}
+		await createPlaylistData(name, user.id);
+
+		setIsOpen(false);
+		setName('');
+
+		window.location.reload();
+
+		setLoading(false);
 	};
 
 	return (
@@ -41,21 +39,15 @@ export default function AddArtist({ token, style }) {
 			{isOpen && (
 				<div className="add-modal-overlay" onClick={toggleModal}>
 					<div className="add-modal" onClick={(e) => e.stopPropagation()}>
-						<h2>Add Artist</h2>
+						<h2>Create Playlist</h2>
 
 						<form onSubmit={handleSubmit}>
 							<input
 								type="text"
-								placeholder="Artist Name *"
+								placeholder="Playlist Name *"
 								value={name}
 								onChange={(e) => setName(e.target.value)}
 								required
-							/>
-
-							<textarea
-								placeholder="Description"
-								value={description}
-								onChange={(e) => setDescription(e.target.value)}
 							/>
 
 							<div className="actions">
@@ -63,7 +55,7 @@ export default function AddArtist({ token, style }) {
 									Cancel
 								</button>
 								<button type="submit" className="submit-btn" disabled={loading}>
-									{loading ? 'Adding...' : 'Add'}
+									{loading ? 'Creating...' : 'Create'}
 								</button>
 							</div>
 						</form>

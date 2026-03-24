@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import SaveButton from './SaveButton.jsx';
+import SaveButton from '../SaveButton.jsx';
 
 function TrackCard({ track, album, artist, onClick }) {
 	return (

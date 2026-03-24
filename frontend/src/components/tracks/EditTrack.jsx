@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import './styles/AddTrack.css';
-import { getUser, getArtists, getAlbums, getGenres } from '../hooks/get';
-import { createArtistData, createAlbumData, updateTrackData } from '../hooks/set';
+import '../../styles/AddTrack.css';
+import { getUser, getArtists, getAlbums, getGenres } from '../../hooks/get';
+import { createArtistData, createAlbumData, updateTrackData } from '../../hooks/set';
 
 export default function EditTrack({ token, track, onClose }) {
 	const [title, setTitle] = useState(track.title || '');

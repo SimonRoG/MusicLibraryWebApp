@@ -1,14 +1,13 @@
 import { useState } from 'react';
-import './styles/AddTrack.css';
-import { getUser } from '../hooks/get';
-import { createPlaylistData } from '../hooks/set';
+import '../../styles/AddTrack.css'; // Using the same styling
+import { createArtistData } from '../../hooks/set';
 
-export default function AddPlaylist({ token, style }) {
+export default function AddArtist({ token, style }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const [name, setName] = useState('');
-	const [loading, setLoading] = useState(false);
+	const [description, setDescription] = useState('');
 
-	const user = getUser(token);
+	const [loading, setLoading] = useState(false);
 
 	if (!token) return null;
 
@@ -20,14 +19,17 @@ export default function AddPlaylist({ token, style }) {
 		e.preventDefault();
 		setLoading(true);
 
-		await createPlaylistData(name, user.id);
-
-		setIsOpen(false);
-		setName('');
-
-		window.location.reload();
-
-		setLoading(false);
+		try {
+			await createArtistData(name.trim(), description.trim() || undefined);
+			setIsOpen(false);
+			setName('');
+			setDescription('');
+			window.location.reload();
+		} catch (error) {
+			console.error("Error creating artist", error);
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	return (
@@ -39,15 +41,21 @@ export default function AddPlaylist({ token, style }) {
 			{isOpen && (
 				<div className="add-modal-overlay" onClick={toggleModal}>
 					<div className="add-modal" onClick={(e) => e.stopPropagation()}>
-						<h2>Create Playlist</h2>
+						<h2>Add Artist</h2>
 
 						<form onSubmit={handleSubmit}>
 							<input
 								type="text"
-								placeholder="Playlist Name *"
+								placeholder="Artist Name *"
 								value={name}
 								onChange={(e) => setName(e.target.value)}
 								required
+							/>
+
+							<textarea
+								placeholder="Description"
+								value={description}
+								onChange={(e) => setDescription(e.target.value)}
 							/>
 
 							<div className="actions">
@@ -55,7 +63,7 @@ export default function AddPlaylist({ token, style }) {
 									Cancel
 								</button>
 								<button type="submit" className="submit-btn" disabled={loading}>
-									{loading ? 'Creating...' : 'Create'}
+									{loading ? 'Adding...' : 'Add'}
 								</button>
 							</div>
 						</form>

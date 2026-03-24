@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { getAlbums, getArtists, getGenres, getUser } from '../hooks/get.js';
-import './styles/Player.css';
-import EditTrack from './EditTrack.jsx';
+import '../styles/Player.css';
+import EditTrack from './tracks/EditTrack.jsx';
 
 function Player({ track, token, onNext, onPrev, hasNext, hasPrev, mixEnabled, onToggleMix }) {
 	const audioRef = useRef(null);

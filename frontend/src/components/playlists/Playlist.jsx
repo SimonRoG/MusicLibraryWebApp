@@ -1,9 +1,9 @@
 import React from 'react'
 import { useParams, Link } from 'react-router-dom';
-import { getUsers, getPlaylistById, getPlaylistTracks, getArtists, getAlbums } from '../hooks/get.js';
-import TrackCard from './TrackCard.jsx';
-import SaveButton from './SaveButton.jsx';
-import './styles/Lists.css';
+import { getUsers, getPlaylistById, getPlaylistTracks, getArtists, getAlbums } from '../../hooks/get.js';
+import TrackCard from '../tracks/TrackCard.jsx';
+import SaveButton from '../SaveButton.jsx';
+import '../../styles/Lists.css';
 
 function Playlist({ onPlay }) {
 	const { id } = useParams();

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import TracksList from './TracksList';
-import { getArtists, getGenres } from '../hooks/get';
-import './styles/Search.css';
+import { getArtists, getGenres } from '../../hooks/get';
+import '../../styles/Search.css';
 
 function SearchTracks({ onPlay }) {
 	const [q, setQ] = useState('');

@@ -1,9 +1,9 @@
 import React from 'react'
 import { useParams, Link } from 'react-router-dom';
-import { getTracks, getAlbumById, getArtists } from '../hooks/get.js';
-import TrackCard from './TrackCard.jsx';
-import SaveButton from './SaveButton.jsx';
-import './styles/Lists.css';
+import { getTracks, getAlbumById, getArtists } from '../../hooks/get.js';
+import TrackCard from '../tracks/TrackCard.jsx';
+import SaveButton from '../SaveButton.jsx';
+import '../../styles/Lists.css';
 
 function Album({ onPlay }) {
 	const { id } = useParams();

@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { getTracks, getPlaylists, getAlbums, getArtists, getUsers, getSavedItems } from '../hooks/get.js';
-import './styles/Lists.css';
-import PlaylistCard from './PlaylistCard.jsx';
-import TrackCard from './TrackCard.jsx';
-import AlbumCard from './AlbumCard.jsx';
-import ArtistCard from './ArtistCard.jsx';
+import '../../styles/Lists.css';
+import PlaylistCard from './playlists/PlaylistCard.jsx';
+import TrackCard from './tracks/TrackCard.jsx';
+import AlbumCard from './albums/AlbumCard.jsx';
+import ArtistCard from './artists/ArtistCard.jsx';
 
 function Saved({ onPlay }) {
 	const savedItems = getSavedItems() || [];

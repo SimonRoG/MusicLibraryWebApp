@@ -1,6 +1,6 @@
 import React from 'react'
-import { getUsers, getPlaylists, getAlbums } from '../hooks/get.js';
-import './styles/Lists.css';
+import { getUsers, getPlaylists, getAlbums } from '../../hooks/get.js';
+import '../../styles/Lists.css';
 
 import PlaylistCard from './PlaylistCard.jsx';
 
