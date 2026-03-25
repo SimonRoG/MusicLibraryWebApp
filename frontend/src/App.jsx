@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
-import '../styles/App.css'
+import './styles/App.css'
 import Navbar from './components/NavBar.jsx';
 import SearchTracks from './components/tracks/SearchTracks.jsx';
 import PlaylistsList from './components/playlists/PlaylistsList.jsx';
