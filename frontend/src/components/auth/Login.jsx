@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../../styles/Login.css';
 
 const Login = ({ onLogin }) => {
@@ -65,6 +65,9 @@ const Login = ({ onLogin }) => {
 				</div>
 				<button type="submit" className="login-btn">Login</button>
 			</form>
+			<p className="auth-switch">
+				Don&apos;t have an account? <Link to="/register">Register</Link>
+			</p>
 		</div>
 	);
 };

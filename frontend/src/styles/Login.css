@@ -49,4 +49,14 @@
 			color: var(--bg);
 		}
 	}
+
+	.auth-switch {
+		margin-top: 16px;
+		text-align: center;
+
+		a {
+			color: inherit;
+			font-weight: 600;
+		}
+	}
 }
