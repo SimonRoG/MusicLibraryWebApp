@@ -175,10 +175,16 @@ def update_track(
 
 
 @app.delete("/api/tracks/{track_id}")
-def delete_track(track_id: int, db: Session = Depends(get_db)):
+def delete_track(
+    track_id: int,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
+):
     track = crud.get_track(db, track_id)
     if not track:
         raise HTTPException(status_code=404, detail="Track not found")
+    if track.owner_id != current_user.id and current_user.id != 1:
+        raise HTTPException(status_code=403, detail="Not authorized to delete this track")
     crud.delete_track(db, track=track)
     return {"ok": True}
 

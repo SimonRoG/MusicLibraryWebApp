@@ -182,14 +182,14 @@ function App() {
 			<Navbar token={token} />
 			<Routes>
 				<Route path="/" element={<Navigate to="/tracks" />} />
-				<Route path="/tracks" element={<SearchTracks onPlay={handlePlay} />} />
+				<Route path="/tracks" element={<SearchTracks onPlay={handlePlay} token={token} />} />
 				<Route path="/playlists" element={<PlaylistsList />} />
 				<Route path="/playlists/:id" element={<Playlist onPlay={handlePlay} token={token} />} />
 				<Route path="/albums" element={<AlbumsList />} />
-				<Route path="/albums/:id" element={<Album onPlay={handlePlay} />} />
+				<Route path="/albums/:id" element={<Album onPlay={handlePlay} token={token} />} />
 				<Route path="/artists" element={<ArtistsList />} />
 				<Route path="/artists/:id" element={<Artist token={token} />} />
-				<Route path="/saved" element={token ? <Saved onPlay={handlePlay} /> : <Navigate to="/login" />} />
+				<Route path="/saved" element={token ? <Saved onPlay={handlePlay} token={token} /> : <Navigate to="/login" />} />
 				<Route path="/login" element={token ? <Navigate to="/profile" /> : <Login onLogin={handleLogin} />} />
 				<Route path="/register" element={token ? <Navigate to="/profile" /> : <Register onLogin={handleLogin} />} />
 				<Route path="/profile" element={token ? <Profile token={token} onLogout={handleLogout} /> : <Navigate to="/login" />} />

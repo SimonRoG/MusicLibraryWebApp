@@ -69,6 +69,13 @@ export const updateTrackData = async (id, payload) => {
 	return await res.json();
 };
 
+export const deleteTrackData = async (id) => {
+	const res = await fetchWithAuth(`/api/tracks/${id}`, {
+		method: 'DELETE'
+	});
+	return await res.json();
+};
+
 export const createPlaylistData = async (name, user_id) => {
 	const res = await fetchWithAuth('/api/playlists', {
 		method: 'POST',

@@ -3,7 +3,7 @@ import TracksList from './TracksList';
 import { getArtists, getGenres } from '../../hooks/get';
 import '../../styles/Search.css';
 
-function SearchTracks({ onPlay }) {
+function SearchTracks({ onPlay, token }) {
 	const [q, setQ] = useState('');
 	const [genreId, setGenreId] = useState('');
 	const [artistId, setArtistId] = useState('');
@@ -56,6 +56,7 @@ function SearchTracks({ onPlay }) {
 				genre_id={genreId}
 				artist_id={artistId}
 				year={year}
+				token={token}
 				onPlay={onPlay}
 			/>
 		</div>

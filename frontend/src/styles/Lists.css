@@ -49,6 +49,12 @@ ul.list {
 				}
 			}
 		}
+
+		.actions {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+		}
 	}
 
 	li:hover {
@@ -126,7 +132,45 @@ ul.list li:hover .save-btn:not(.saved) {
 	}
 }
 
+.track-delete-btn {
+	background: none;
+	border: 1px solid var(--text);
+	border-radius: 4px;
+	color: var(--text);
+	cursor: pointer;
+	padding: 0.25em 0.6em;
+
+	&:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+}
+
+.track-edit-btn {
+	background: none;
+	border: 1px solid var(--text);
+	border-radius: 4px;
+	color: var(--text);
+	cursor: pointer;
+	padding: 0.25em 0.6em;
+
+	&:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+}
+
 ul.list li:hover .playlist-remove-btn:not(:disabled) {
+	background-color: var(--text);
+	color: var(--bg);
+}
+
+ul.list li:hover .track-delete-btn:not(:disabled) {
+	background-color: var(--text);
+	color: var(--bg);
+}
+
+ul.list li:hover .track-edit-btn:not(:disabled) {
 	background-color: var(--text);
 	color: var(--bg);
 }

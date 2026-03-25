@@ -1,20 +1,24 @@
-import React, { useState } from 'react';
-import { getTracks, getPlaylists, getAlbums, getArtists, getUsers, getSavedItems } from '../hooks/get.js';
+import React, { useEffect, useState } from 'react';
+import { getTracks, getPlaylists, getAlbums, getArtists, getUsers, getSavedItems, getUser } from '../hooks/get.js';
+import { deleteTrackData } from '../hooks/set.js';
 import '../styles/Lists.css';
 import PlaylistCard from './playlists/PlaylistCard.jsx';
 import TrackCard from './tracks/TrackCard.jsx';
 import AlbumCard from './albums/AlbumCard.jsx';
 import ArtistCard from './artists/ArtistCard.jsx';
 
-function Saved({ onPlay }) {
+function Saved({ onPlay, token }) {
 	const savedItems = getSavedItems() || [];
 	const albums = getAlbums();
 	const artists = getArtists();
 	const users = getUsers();
 	const tracks = getTracks({ limit: 1000 }) || [];
 	const playlists = getPlaylists() || [];
+	const user = getUser(token);
 
 	const [filter, setFilter] = useState('all');
+	const [visibleSavedTracks, setVisibleSavedTracks] = useState([]);
+	const [deletingTrackId, setDeletingTrackId] = useState(null);
 
 	const savedItemsArray = Array.isArray(savedItems) ? savedItems : [];
 	const savedTracks = savedItemsArray.filter(item => item.track_id);
@@ -22,7 +26,23 @@ function Saved({ onPlay }) {
 	const savedArtists = savedItemsArray.filter(item => item.artist_id);
 	const savedPlaylists = savedItemsArray.filter(item => item.playlist_id);
 
-	const playableTracks = savedTracks.map(item => tracks.find(t => t.id === item.track_id)).filter(Boolean);
+	useEffect(() => {
+		setVisibleSavedTracks(savedTracks);
+	}, [savedItems]);
+
+	const playableTracks = visibleSavedTracks.map(item => tracks.find(t => t.id === item.track_id)).filter(Boolean);
+	const canDeleteTrack = (track) => Boolean(user) && (track.owner_id === user.id || user.id === 1);
+
+	const handleDeleteTrack = async (trackId) => {
+		setDeletingTrackId(trackId);
+		const result = await deleteTrackData(trackId);
+
+		if (result?.ok) {
+			setVisibleSavedTracks((currentItems) => currentItems.filter((item) => item.track_id !== trackId));
+		}
+
+		setDeletingTrackId(null);
+	};
 
 	return (
 		<div style={{ padding: '20px' }}>
@@ -38,11 +58,11 @@ function Saved({ onPlay }) {
 				</select>
 			</div>
 
-			{(filter === 'all' || filter === 'tracks') && savedTracks.length > 0 && (
+			{(filter === 'all' || filter === 'tracks') && visibleSavedTracks.length > 0 && (
 				<>
 					<h3>Tracks</h3>
 					<ul className="list">
-						{savedTracks.map(item => {
+						{visibleSavedTracks.map(item => {
 							const track = tracks.find(t => t.id === item.track_id);
 							if (!track) return null;
 
@@ -54,7 +74,18 @@ function Saved({ onPlay }) {
 									track={track}
 									album={album}
 									artist={artists.find(artist => artist.id === track.artist_id)}
+									token={token}
 									onClick={() => onPlay && onPlay(track, playableTracks)}
+									actions={canDeleteTrack(track) ? (
+										<button
+											type="button"
+											className="track-delete-btn"
+											onClick={() => handleDeleteTrack(track.id)}
+											disabled={deletingTrackId === track.id}
+										>
+											{deletingTrackId === track.id ? 'Deleting...' : 'Delete'}
+										</button>
+									) : null}
 								/>
 							);
 						})}
