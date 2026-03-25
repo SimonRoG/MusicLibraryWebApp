@@ -184,7 +184,7 @@ function App() {
 				<Route path="/" element={<Navigate to="/tracks" />} />
 				<Route path="/tracks" element={<SearchTracks onPlay={handlePlay} />} />
 				<Route path="/playlists" element={<PlaylistsList />} />
-				<Route path="/playlists/:id" element={<Playlist onPlay={handlePlay} />} />
+				<Route path="/playlists/:id" element={<Playlist onPlay={handlePlay} token={token} />} />
 				<Route path="/albums" element={<AlbumsList />} />
 				<Route path="/albums/:id" element={<Album onPlay={handlePlay} />} />
 				<Route path="/artists" element={<ArtistsList />} />

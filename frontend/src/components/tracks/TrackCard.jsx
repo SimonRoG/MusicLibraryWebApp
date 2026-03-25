@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SaveButton from '../SaveButton.jsx';
 
-function TrackCard({ track, album, artist, onClick }) {
+function TrackCard({ track, album, artist, onClick, actions }) {
 	return (
 		<li onClick={onClick}>
 			<div className="info">
@@ -21,6 +21,7 @@ function TrackCard({ track, album, artist, onClick }) {
 			</div>
 			<div className="actions" onClick={(e) => e.stopPropagation()}>
 				<SaveButton itemType="track" itemId={track.id} />
+				{actions}
 			</div>
 		</li>
 	);

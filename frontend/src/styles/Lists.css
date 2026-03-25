@@ -111,3 +111,22 @@ ul.list {
 ul.list li:hover .save-btn:not(.saved) {
 	color: var(--bg);
 }
+
+.playlist-remove-btn {
+	background: none;
+	border: 1px solid var(--text);
+	border-radius: 4px;
+	color: var(--text);
+	cursor: pointer;
+	padding: 0.25em 0.6em;
+
+	&:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+	}
+}
+
+ul.list li:hover .playlist-remove-btn:not(:disabled) {
+	background-color: var(--text);
+	color: var(--bg);
+}

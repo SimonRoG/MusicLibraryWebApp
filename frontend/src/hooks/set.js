@@ -87,6 +87,13 @@ export const addTrackToPlaylistData = async (playlistId, trackId) => {
 	return await res.json();
 };
 
+export const removeTrackFromPlaylistData = async (playlistId, trackId) => {
+	const res = await fetchWithAuth(`/api/playlists/${playlistId}/tracks/${trackId}`, {
+		method: 'DELETE'
+	});
+	return await res.json();
+};
+
 export const toggleSave = async (payload, isSaved) => {
 	try {
 		const url = '/api/saved';

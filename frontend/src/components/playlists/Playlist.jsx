@@ -1,17 +1,28 @@
-import React from 'react'
-import { useParams, Link } from 'react-router-dom';
-import { getUsers, getPlaylistById, getPlaylistTracks, getArtists, getAlbums } from '../../hooks/get.js';
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom';
+import { getUsers, getPlaylistById, getPlaylistTracks, getArtists, getAlbums, getUser } from '../../hooks/get.js';
+import { removeTrackFromPlaylistData } from '../../hooks/set.js';
 import TrackCard from '../tracks/TrackCard.jsx';
 import SaveButton from '../SaveButton.jsx';
 import '../../styles/Lists.css';
 
-function Playlist({ onPlay }) {
+function Playlist({ onPlay, token }) {
 	const { id } = useParams();
 	const users = getUsers();
 	const tracks = getPlaylistTracks(id);
 	const playlist = getPlaylistById(id);
 	const artists = getArtists();
 	const albums = getAlbums();
+	const user = getUser(token);
+	const [displayedTracks, setDisplayedTracks] = useState([]);
+	const [removingTrackId, setRemovingTrackId] = useState(null);
+
+	useEffect(() => {
+		if (Array.isArray(tracks)) {
+			// eslint-disable-next-line react-hooks/set-state-in-effect
+			setDisplayedTracks(tracks);
+		}
+	}, [tracks]);
 
 	if (!playlist)
 		return <div>Loading...</div>;
@@ -20,6 +31,18 @@ function Playlist({ onPlay }) {
 		return <div><h2>{playlist.detail}</h2></div>;
 
 	const owner = playlist.user_id === 1 ? 'MusLi' : users.find(u => u.id === playlist.user_id)?.username || 'Unknown';
+	const canEditPlaylist = Boolean(user) && (playlist.user_id === user.id || user.id === 1);
+
+	const handleRemoveTrack = async (trackId) => {
+		setRemovingTrackId(trackId);
+		const result = await removeTrackFromPlaylistData(id, trackId);
+
+		if (result?.ok) {
+			setDisplayedTracks((currentTracks) => currentTracks.filter((track) => track.id !== trackId));
+		}
+
+		setRemovingTrackId(null);
+	};
 
 	return (
 		<>
@@ -30,7 +53,7 @@ function Playlist({ onPlay }) {
 			<p>Owner: {owner}</p>
 			{tracks.detail && <div><h2>{tracks.detail}</h2></div>}
 			<ul className="list">
-				{Array.isArray(tracks) && tracks.map(track => {
+				{Array.isArray(displayedTracks) && displayedTracks.map(track => {
 					const album = albums.find(a => a.id === track.album_id);
 					const artist = artists.find(a => a.id === track.artist_id);
 
@@ -40,7 +63,17 @@ function Playlist({ onPlay }) {
 							track={track}
 							album={album}
 							artist={artist}
-							onClick={() => onPlay && onPlay(track, tracks)}
+							onClick={() => onPlay && onPlay(track, displayedTracks)}
+							actions={canEditPlaylist ? (
+								<button
+									type="button"
+									className="playlist-remove-btn"
+									onClick={() => handleRemoveTrack(track.id)}
+									disabled={removingTrackId === track.id}
+								>
+									{removingTrackId === track.id ? 'Removing...' : 'Remove'}
+								</button>
+							) : null}
 						/>
 					)
 				})}

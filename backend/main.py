@@ -287,8 +287,18 @@ def add_track_to_playlist(
 
 @app.delete("/api/playlists/{playlist_id}/tracks/{track_id}")
 def remove_track_from_playlist(
-    playlist_id: int, track_id: int, db: Session = Depends(get_db)
+    playlist_id: int,
+    track_id: int,
+    db: Session = Depends(get_db),
+    current_user: models.User = Depends(get_current_user),
 ):
+    pl = crud.get_playlist(db, playlist_id)
+    if not pl:
+        raise HTTPException(status_code=404, detail="Playlist not found")
+    if pl.user_id != current_user.id and current_user.id != 1:
+        raise HTTPException(
+            status_code=403, detail="Not authorized to edit this playlist"
+        )
     ok = crud.remove_track_from_playlist(db, playlist_id=playlist_id, track_id=track_id)
     if not ok:
         raise HTTPException(status_code=404, detail="Track not found in playlist")
