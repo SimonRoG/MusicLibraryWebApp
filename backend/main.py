@@ -425,7 +425,7 @@ def get_saved(
 
 @app.post("/api/saved")
 def add_to_saved(
-    item: schemas.Saved,
+    item: schemas.SavedCreate,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
@@ -441,7 +441,7 @@ def add_to_saved(
 
 @app.delete("/api/saved")
 def remove_from_saved(
-    item: schemas.Saved,
+    item: schemas.SavedCreate,
     current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
