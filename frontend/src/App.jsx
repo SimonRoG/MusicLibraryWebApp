@@ -84,10 +84,12 @@ function App() {
 			return;
 		}
 
+		if (playOrder.length > 0) {
+			setCurrentOrderIndex(0);
+			return;
+		}
+
 		if (!contextParams || !canLoadMore) {
-			if (playOrder.length > 0) {
-				setCurrentOrderIndex(0);
-			}
 			return;
 		}
 
@@ -99,9 +101,6 @@ function App() {
 
 		if (!Array.isArray(fetchedTracks) || fetchedTracks.length === 0) {
 			setCanLoadMore(false);
-			if (playOrder.length > 0) {
-				setCurrentOrderIndex(0);
-			}
 			return;
 		}
 
@@ -110,9 +109,6 @@ function App() {
 
 		if (uniqueTracks.length === 0) {
 			setCanLoadMore(false);
-			if (playOrder.length > 0) {
-				setCurrentOrderIndex(0);
-			}
 		} else {
 			const appendedOrder = mixEnabled
 				? shuffleIds(uniqueTracks.map(track => track.id))
@@ -126,15 +122,11 @@ function App() {
 	};
 
 	const handlePrev = () => {
-		if (playOrder.length === 0) {
+		if (currentOrderIndex <= 0) {
 			return;
 		}
 
-		if (currentOrderIndex > 0) {
-			setCurrentOrderIndex(index => index - 1);
-		} else {
-			setCurrentOrderIndex(playOrder.length - 1);
-		}
+		setCurrentOrderIndex(index => index - 1);
 	};
 
 	const handleToggleMix = () => {
@@ -171,8 +163,8 @@ function App() {
 	const currentTrack = currentTrackId
 		? queue.find(track => track.id === currentTrackId) || null
 		: null;
-	const hasPrev = playOrder.length > 1;
-	const hasNext = playOrder.length > 1 || canLoadMore;
+	const hasPrev = currentOrderIndex > 0;
+	const hasNext = playOrder.length > 0 || canLoadMore;
 
 	const playlistIdMatch = location.pathname.match(/^\/playlists\/(\d+)$/);
 	const playlistId = playlistIdMatch ? playlistIdMatch[1] : null;

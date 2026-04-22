@@ -12,6 +12,7 @@ function TracksList({ q, genre_id, artist_id, year, initialLimit = 10, onPlay, t
 	const offset = (page - 1) * limit;
 
 	const tracks = getTracks({ q, genre_id, artist_id, year, offset, limit });
+	const allMatchingTracks = getTracks({ q, genre_id, artist_id, year, offset: 0, limit: 1000 });
 	const artists = getArtists();
 	const albums = getAlbums();
 	const user = getUser(token);
@@ -53,7 +54,7 @@ function TracksList({ q, genre_id, artist_id, year, initialLimit = 10, onPlay, t
 						album={albums.find(album => album.id === track.album_id)}
 						artist={artists.find(artist => artist.id === track.artist_id)}
 						token={token}
-						onClick={() => onPlay && onPlay(track, displayedTracks, { q, genre_id, artist_id, year })}
+						onClick={() => onPlay && onPlay(track, allMatchingTracks, { q, genre_id, artist_id, year })}
 						actions={canDeleteTrack(track) ? (
 							<button
 								type="button"
